@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>브루나이 수입업체 디렉토리 · Brunei Importer Directory | KOIMA</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root{
+    --navy:#1A2B5E; --navy-d:#11193b; --red:#D0001B; --gray:#6D6E70;
+    --ink:#1f2430; --paper:#f3f3ef; --card:#fff; --line:#deded6;
+    --line-soft:#e9e9e2; --muted:#80828a; --chip:#eef0f4;
+    --vn:#C8A951; --vn-d:#a88c3e;
+    --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Pretendard',-apple-system,sans-serif;background:var(--paper);
+    color:var(--ink);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  ::selection{background:var(--navy);color:#fff}
+  a{color:var(--navy);text-decoration:none}
+
+  /* ===== HERO ===== */
+  .hero{background:linear-gradient(160deg,#1A2B5E 0%,#11193b 100%);
+    color:#fff;position:relative;overflow:hidden}
+  .hero-top{display:flex;align-items:center;justify-content:space-between;
+    padding:14px 26px;border-bottom:1px solid rgba(255,255,255,.1)}
+  .brand{display:flex;align-items:baseline;gap:10px}
+  .brand .mk{font-size:17px;font-weight:800;letter-spacing:.5px}
+  .brand .mk b{color:#ff5d6e}
+  .brand .sub{font-size:9px;letter-spacing:.2em;color:#aab2d0;text-transform:uppercase}
+  .hero-top .svc{font-size:9px;letter-spacing:.14em;color:#aab2d0;text-transform:uppercase}
+  .hero-body{padding:30px 26px 26px;display:flex;justify-content:space-between;
+    align-items:flex-end;gap:30px;flex-wrap:wrap}
+  .hero-l{max-width:640px}
+  .flagchip{display:inline-flex;align-items:center;gap:8px;
+    background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);
+    padding:5px 12px;border-radius:2px;margin-bottom:14px}
+  .flagchip .fl{width:22px;height:15px;border-radius:2px;display:block;
+    box-shadow:0 0 0 1px rgba(255,255,255,.25)}
+  .flagchip span{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#cdd2e4}
+  .hero h1{font-size:30px;font-weight:800;line-height:1.16;letter-spacing:-.02em}
+  .hero h1 .en{display:block;font-size:17px;font-weight:600;color:#aab2d0;margin-top:6px}
+  .hero p{font-size:13px;color:#c4cadd;margin-top:14px;line-height:1.6}
+  .hero-cta{display:inline-flex;align-items:center;gap:7px;margin-top:16px;
+    background:#fff;color:var(--navy);font-size:12px;font-weight:700;
+    padding:9px 16px;border-radius:2px;letter-spacing:.01em}
+  .hero-cta:hover{background:#ff5d6e;color:#fff;text-decoration:none}
+  #directory{scroll-margin-top:14px}
+  .hero-r{display:flex;gap:10px}
+  .kpi{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+    padding:14px 18px;border-radius:3px;text-align:center;min-width:96px}
+  .kpi .n{font-family:var(--mono);font-size:23px;font-weight:700;line-height:1}
+  .kpi .n b{color:#ff5d6e;font-weight:700}
+  .kpi .l{font-size:9px;color:#aab2d0;margin-top:6px;letter-spacing:.04em;line-height:1.4}
+
+  .wrap{max-width:1300px;margin:0 auto;padding:22px 26px 60px}
+
+  /* ===== CONTROLS ===== */
+  .controls{background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:16px;display:grid;grid-template-columns:1.5fr 1fr;gap:16px}
+  .cgroup .clbl{font-size:10px;font-weight:700;color:var(--gray);
+    letter-spacing:.05em;text-transform:uppercase;margin-bottom:7px;display:block}
+  .clbl .en{color:var(--muted);font-weight:500}
+  .search-in{width:100%;padding:11px 13px;border:1px solid var(--line);
+    border-radius:2px;font-size:14px;font-family:inherit;background:#fcfcfa}
+  .search-in:focus{outline:none;border-color:var(--navy);background:#fff}
+  .scale-row{display:flex;flex-wrap:wrap;gap:5px}
+  .schip{font-size:10px;padding:6px 9px;border:1px solid var(--line);border-radius:2px;
+    cursor:pointer;background:#fcfcfa;font-family:var(--mono);user-select:none;
+    color:var(--gray);white-space:nowrap}
+  .schip:hover{border-color:var(--navy)}
+  .schip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .ctools{display:flex;align-items:center;gap:12px;margin-top:14px;flex-wrap:wrap}
+  .toggle{display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12px;user-select:none}
+  .toggle .sw{width:32px;height:17px;background:var(--line);border-radius:9px;
+    position:relative;transition:.15s;flex-shrink:0}
+  .toggle .sw::after{content:'';position:absolute;top:2px;left:2px;width:13px;height:13px;
+    background:#fff;border-radius:50%;transition:.15s}
+  .toggle.on .sw{background:#1a7a4c}
+  .toggle.on .sw::after{left:17px}
+  .btn-reset{background:none;border:1px solid var(--line);padding:6px 12px;
+    border-radius:2px;font-size:11px;cursor:pointer;color:var(--gray);font-family:inherit}
+  .btn-reset:hover{border-color:var(--red);color:var(--red)}
+
+  /* ===== INTEL SECTIONS ===== */
+  .intel{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .ibox{background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:16px 17px;display:flex;flex-direction:column}
+  .ibox.wide{grid-column:1/-1}
+  .ibox-h{display:flex;align-items:center;gap:8px;margin-bottom:11px}
+  .ibox-h .ic{width:24px;height:24px;border-radius:3px;background:var(--navy);
+    color:#fff;display:flex;align-items:center;justify-content:center;
+    font-size:12px;flex-shrink:0}
+  .ibox-h h3{font-size:12.5px;font-weight:800;color:var(--navy);letter-spacing:-.01em}
+  .ibox-h h3 .en{font-weight:500;color:var(--muted);font-size:10.5px;
+    font-family:var(--mono);display:block;margin-top:1px}
+  .ibox-note{margin-left:auto;font-size:9px;color:var(--muted);
+    background:#f4f4f0;padding:3px 7px;border-radius:2px;letter-spacing:.03em}
+
+  /* trade snapshot */
+  .trade-stats{display:flex;gap:10px;flex-wrap:wrap}
+  .ts-item{flex:1;min-width:88px;background:#f7f7f3;border-radius:3px;
+    padding:10px 11px;border:1px solid var(--line-soft)}
+  .ts-item .tn{font-family:var(--mono);font-size:16px;font-weight:700;color:var(--navy)}
+  .ts-item .tl{font-size:9.5px;color:var(--gray);margin-top:3px;line-height:1.4}
+
+  /* FTA list */
+  .fta-list{display:flex;flex-direction:column;gap:8px}
+  .fta-row{display:flex;align-items:flex-start;gap:9px;padding:9px 10px;
+    background:#f7f7f3;border-radius:3px;border-left:3px solid var(--navy)}
+  .fta-row .fn{flex:1}
+  .fta-row .fn b{font-size:12px;color:var(--ink);font-weight:700}
+  .fta-row .fn .fd{font-size:10.5px;color:var(--gray);margin-top:2px;line-height:1.45}
+  .fta-row .fbadge{font-family:var(--mono);font-size:9px;font-weight:600;
+    padding:3px 7px;border-radius:2px;background:#e4f3ea;color:#1a7a4c;
+    white-space:nowrap;flex-shrink:0}
+  .intel p.lead{font-size:11px;color:var(--gray);line-height:1.55;margin-bottom:11px}
+  .intel p.lead b{color:var(--navy);font-weight:700}
+
+  /* link buttons */
+  .linkrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
+  .linkbtn{display:flex;align-items:center;gap:6px;font-size:10.5px;
+    padding:7px 11px;border:1px solid var(--line);border-radius:2px;
+    background:#fcfcfa;color:var(--navy);font-weight:600}
+  .linkbtn:hover{border-color:var(--navy);text-decoration:none;background:#fff}
+  .linkbtn .ar{font-family:var(--mono);color:var(--muted)}
+
+  /* counterpart */
+  .cp-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .cp-card{background:#f7f7f3;border:1px solid var(--line-soft);border-radius:3px;
+    padding:11px 12px}
+  .cp-card .cprole{font-size:8.5px;font-weight:700;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--red);margin-bottom:4px}
+  .cp-card .cpname{font-size:12px;font-weight:700;color:var(--ink);line-height:1.35}
+  .cp-card .cpinfo{font-size:10px;color:var(--gray);margin-top:5px;line-height:1.6;
+    font-family:var(--mono)}
+  .cp-card .cpinfo a{color:var(--navy)}
+  .ph{color:#b5b5ad;font-style:italic;font-family:'Pretendard'}
+
+  /* joint banner */
+  .joint{grid-column:1/-1;background:linear-gradient(100deg,#1A2B5E,#11193b);
+    color:#fff;border-radius:3px;padding:15px 18px;display:flex;
+    align-items:center;gap:16px;flex-wrap:wrap}
+  .joint .jl{flex:1;min-width:260px}
+  .joint .jt{font-size:13px;font-weight:800}
+  .joint .jd{font-size:10.5px;color:#aab2d0;margin-top:4px;line-height:1.5}
+  .joint .jbadges{display:flex;gap:8px;align-items:center}
+  .joint .jbadge{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);
+    border-radius:3px;padding:8px 13px;font-size:10px;font-weight:700;
+    letter-spacing:.04em;text-align:center;line-height:1.4}
+  .joint .jx{color:#ff5d6e;font-size:14px;font-weight:700}
+
+  /* ===== LIST HEAD ===== */
+  .list-head{margin-top:22px;padding-bottom:2px}
+  .list-head .lh-t{display:flex;align-items:center;gap:10px}
+  .list-head .lh-ic{width:28px;height:28px;background:var(--navy);color:#fff;
+    border-radius:3px;display:flex;align-items:center;justify-content:center;
+    font-size:13px;flex-shrink:0}
+  .list-head h2{font-size:16px;font-weight:800;color:var(--navy);letter-spacing:-.01em}
+  .list-head .lh-en{font-size:11px;color:var(--muted);font-family:var(--mono)}
+
+  /* ===== TOOLBAR ===== */
+  .toolbar{display:flex;align-items:center;gap:14px;margin:18px 0 10px;flex-wrap:wrap}
+  .rescount{font-size:13px;color:var(--gray)}
+  .rescount b{font-family:var(--mono);font-size:19px;color:var(--navy);font-weight:700}
+  .tb-r{margin-left:auto;display:flex;gap:9px}
+  .sortsel{padding:8px 11px;border:1px solid var(--line);border-radius:2px;
+    font-size:12px;font-family:inherit;background:#fff;cursor:pointer}
+  .btn-csv{background:var(--navy);color:#fff;border:none;padding:9px 15px;
+    border-radius:2px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+  .btn-csv:hover{background:var(--navy-d)}
+  .btn-csv:disabled{background:var(--line);cursor:not-allowed}
+
+  /* ===== CARDS ===== */
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:15px 16px;cursor:pointer;transition:border-color .12s,box-shadow .12s;
+    display:flex;flex-direction:column;gap:10px}
+  .card:hover{border-color:var(--navy);box-shadow:0 3px 14px rgba(17,25,59,.09)}
+  .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+  .card-nm{font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.3}
+  .card-en{font-size:10.5px;color:var(--muted);font-family:var(--mono);margin-top:2px}
+  .scale-badge{display:inline-block;font-family:var(--mono);font-size:9.5px;font-weight:600;
+    padding:4px 7px;border-radius:2px;white-space:nowrap;flex-shrink:0}
+  .card-meta{display:flex;gap:14px;font-size:11px;color:var(--gray);
+    border-top:1px solid var(--line-soft);padding-top:9px}
+  .card-meta .mi b{font-family:var(--mono);color:var(--navy);font-weight:700}
+  .card-ctry{font-size:11px;color:var(--gray);line-height:1.5}
+  .card-ctry .ct-tag{display:inline-block;background:var(--chip);border-radius:2px;
+    padding:1px 6px;margin:0 3px 3px 0;font-size:10.5px}
+  .card-ctry .ct-more{font-family:var(--mono);font-size:10px;color:var(--navy)}
+  .card-contact{display:flex;gap:7px;flex-wrap:wrap}
+  .cc-pill{font-size:10.5px;padding:3px 8px;border-radius:2px;border:1px solid var(--line-soft)}
+  .cc-pill.em{background:#eef1f8;color:var(--navy)}
+  .cc-pill.no{background:#f6f6f3;color:var(--line);border-color:var(--line-soft)}
+
+  .nodata{grid-column:1/-1;padding:60px 20px;text-align:center;color:var(--muted)}
+  .nodata .big{font-size:15px;font-weight:600;color:var(--gray);margin-bottom:6px}
+
+  /* ===== PAGER ===== */
+  .pager{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:22px;flex-wrap:wrap}
+  .pager button{min-width:34px;height:34px;border:1px solid var(--line);background:#fff;
+    border-radius:2px;cursor:pointer;font-family:var(--mono);font-size:12px;color:var(--gray)}
+  .pager button:hover:not(:disabled){border-color:var(--navy);color:var(--navy)}
+  .pager button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .pager button:disabled{opacity:.4;cursor:default}
+  .pager .pinfo{font-size:11px;color:var(--muted);margin:0 8px}
+
+  /* ===== MODAL ===== */
+  .ov{position:fixed;inset:0;background:rgba(17,25,59,.55);z-index:100;
+    display:none;align-items:center;justify-content:center;padding:24px}
+  .ov.open{display:flex}
+  .modal{background:#fff;border-radius:4px;max-width:620px;width:100%;
+    max-height:86vh;overflow-y:auto;border-top:3px solid var(--vn)}
+  .modal-h{padding:20px 24px 16px;border-bottom:1px solid var(--line-soft);
+    display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+  .modal-h h3{font-size:18px;font-weight:800;color:var(--navy);line-height:1.3}
+  .modal-h .en{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:4px}
+  .x-btn{background:none;border:1px solid var(--line);width:30px;height:30px;
+    border-radius:2px;cursor:pointer;font-size:16px;color:var(--gray);flex-shrink:0}
+  .x-btn:hover{border-color:var(--red);color:var(--red)}
+  .modal-b{padding:20px 24px 24px}
+  .dgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px 20px;margin-bottom:20px}
+  .dfield .dl{font-size:9.5px;font-weight:700;color:var(--gray);letter-spacing:.05em;
+    text-transform:uppercase;margin-bottom:4px}
+  .dfield .dv{font-size:13.5px;font-family:var(--mono)}
+  .dsec-t{font-size:10.5px;font-weight:700;color:var(--navy);letter-spacing:.05em;
+    text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .dsec-t::after{content:'';flex:1;height:1px;background:var(--line-soft)}
+  .ct-chips{display:flex;flex-wrap:wrap;gap:5px}
+  .ct-chip{font-size:11.5px;padding:4px 9px;background:var(--chip);border-radius:2px;
+    border:1px solid var(--line-soft)}
+  .ct-chip.vn{background:var(--vn);color:#fff;border-color:var(--vn);font-weight:600}
+  .modal-cta{margin-top:20px;background:#f5f5f1;border-left:3px solid var(--navy);
+    padding:13px 15px;font-size:12px;color:var(--gray);line-height:1.55}
+  .modal-cta b{color:var(--navy)}
+
+  footer{text-align:center;padding:28px 20px 8px;font-size:11px;color:var(--muted);line-height:1.7}
+  footer .mono{font-family:var(--mono)}
+
+  @media(max-width:880px){
+    .controls{grid-template-columns:1fr}
+    .grid{grid-template-columns:1fr}
+    .hero-body{flex-direction:column;align-items:flex-start}
+    .dgrid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-top">
+    <div class="brand">
+      <span class="mk">KOIMA<b>.</b></span>
+      <span class="sub">Korea Importers Association</span>
+    </div>
+    <a href="asean.html" style="font-size:9px;letter-spacing:.14em;color:#aab2d0;text-transform:uppercase;text-decoration:none">← ASEAN Hub · 아세안 허브</a>
+  </div>
+  <div class="hero-body">
+    <div class="hero-l">
+      <div class="flagchip"><img class="fl" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBpZD0iZmxhZy1pY29ucy1ibiIgdmlld0JveD0iMCAwIDY0MCA0ODAiPgogIDxwYXRoIGZpbGw9IiNmN2UwMTciIGQ9Ik0wIDBoNjQwdjQ4MEgweiIvPgogIDxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0wIDMzLjN2MjEzLjRsNjQwIDEwMFYyMzMuM3oiLz4KICA8cGF0aCBmaWxsPSIjMDAwMDAxIiBkPSJNMCAxNDYuN3YxMDBsNjQwIDIwMHYtMTAweiIvPgogIDxnIGZpbGw9IiNjZjExMjYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xNjApc2NhbGUoLjY2NjY3KSI+CiAgICA8cGF0aCBkPSJNNjk1LjcgNTY5LjdhMTE3IDExNyAwIDAgMS00OS40LTE3LjJjLTIuNC0xLjYtNC42LTMtNS0zcy0uNiAxLjktLjYgNC4xYzAgNi40LTIuNiA5LjYtOSAxMS4zLTYuMiAxLjYtMTUuNi0xLjYtMjMuMi04YTY4IDY4IDAgMCAwLTI0LjctMTMuNSA0MCA0MCAwIDAgMC0yOCAzLjYgOSA5IDAgMCAxLTIuOCAxLjNjLTEuMSAwLTEtNi45LjItOSAxLjUtMyA1LjEtNS44IDkuNC03LjMgMi4yLS44IDQtMS44IDQtMi4zcy0uOC0yLTEuNy0zLjZxLTQuMy03LjkgMy40LTEzLjljNS4yLTQgMTQtNC42IDIxLjctMS43bDQgMS40YzEgMCAuNC0xLjUtMi40LTUuNi0zLjItNC43LTMuOS03LTMuNS0xMi43YTE1IDE1IDAgMCAxIDEzLjUtMTMuNWM1LjgtLjQgOS40IDEuNiAxOCA5LjdhMTQ0IDE0NCAwIDAgMCA4NiA0MS42YzguMyAxIDI0LjguNSAzNC41LTFhMTU2IDE1NiAwIDAgMCA4MS44LTQwLjhjNi40LTYgOS40LTcuNiAxNC43LTcuNiA0LjUgMCA3LjcgMS40IDExIDUgMyAzLjMgNCA2LjQgMy42IDExLjUtLjIgMy4yLS43IDQuNy0yLjYgNy45LTIuOCA0LjUtMi4zIDUgMy4yIDIuOCA3LjYtMyAxNi45LTEuNiAyMS45IDMuMiA0LjQgNC4yIDQuOCA4LjQgMS40IDE0LTEuMyAyLjEtMi4zIDQtMi4zIDQuNCAwIC42IDEgLjggNS41IDEuNiA2IDEgOS41IDUuNCA5LjUgMTIuMiAwIDItLjMgMy43LS42IDMuN3MtMi42LS45LTUtMS45Yy03LTIuOS0xMS0zLjYtMTkuMi0zLjUtNi4yIDAtOC4zLjMtMTIuNiAxLjdhNTggNTggMCAwIDAtMTkuNSAxMS41Yy02LjQgNS43LTEwLjQgNy41LTE2LjYgNy40cS04LjcgMC0xMS44LTVjLTEuMS0xLjgtMS4zLTIuOC0xLTYuOC4yLTIuNi4xLTQuNyAwLTQuNy0uMyAwLTIuNSAxLjQtNSAzLjFBODEgODEgMCAwIDEgNzc4IDU2MGExODIgMTgyIDAgMCAxLTgyLjMgOS43Ii8+CiAgICA8cGF0aCBkPSJNNzA2LjMgNTI1LjJhMTM2IDEzNiAwIDAgMS05Ny45LTU1LjdjLTI0LjQtMzMuMi0zMi03Ny4xLTI0LjYtMTE3LjIgNC0xOC4zIDEyLTM2LjYgMjUuNS00OS42YTExNSAxMTUgMCAwIDAtOC43IDc0LjNjOSA0OS44IDUxIDkxLjkgMTAxLjMgOTkuMiAyMCA1LjcgNDAuNS0uNCA1OS41LTYuNSA0Mi0xNC44IDc0LTU0LjYgNzcuOC05OS4xIDMuMy0yNC0uMy00OS4xLTExLjItNzEgNi4yIDMuMyAxNCAxNi4yIDE4LjYgMjQuOCAxNiAzMSAxNi43IDY4LjEgNy4zIDEwMS4yLTEyLjggNDIuMS00NSA3OS04Ny41IDkyLjRhMTY2IDE2NiAwIDAgMS02MCA3LjJ6Ii8+CiAgICA8ZyBpZD0iYm4tYSI+CiAgICAgIDxwYXRoIGQ9Ik01MTIgNDY5LjljLTIuNS0uNC01LjMgMi4xLTQuMyA0LjcgMS44IDIuNiA1IDQgNy44IDUuMmE1NCA1NCAwIDAgMCAyMy4yIDMuNiA1MCA1MCAwIDAgMCAxNy0zYzMtMSA2LjgtMiA4LTUuNCAxLjMtMi4xLTEtNC4zLTMuMS0zLjktMyAuNy02IDItOSAyLjlhNTggNTggMCAwIDEtMjAuMyAyIDU0IDU0IDAgMCAxLTE0LjQtNC4yYy0xLjYtLjctMy4xLTEuNy00LjktMS45Ii8+CiAgICAgIDxwYXRoIGQ9Ik01MTQuOCA0NTkuNWMtMi41LS40LTQuNyAyLjYtMy43IDUgMiAyLjggNS4zIDQuMyA4LjQgNS42YTQyIDQyIDAgMCAwIDE3IDIuOWgxLjVhMzggMzggMCAwIDAgMTQuNC0yLjhjMi43LTEuMSA2LjEtMi4yIDcuMy01LjIuOS0xLjcuMi00LjEtMi00LjMtMS44IDAtMy41IDEuMi01LjMgMS43YTQ0IDQ0IDAgMCAxLTIwLjYgMy4yYy00LjQtLjUtOC41LTIuMS0xMi41LTQtMS41LS43LTIuOC0xLjgtNC41LTJ6Ii8+CiAgICAgIDxwYXRoIGQ9Ik01MTguMyA0NDkuNmMtMi4yLS4zLTMuNyAyLjItMy4zIDQuMS4zIDEuOCAxLjggMyAzLjEgNGEzMCAzMCAwIDAgMCAxOC42IDUuM2gxLjZhMjggMjggMCAwIDAgMTItMi44YzIuNS0xIDUuNC0yLjMgNi4zLTUuMi40LTEuMy42LTMuMi0uOS00LTEuNi0uOC0zLjEuNS00LjUgMWEzNCAzNCAwIDAgMS0xNS41IDMuOSAyNyAyNyAwIDAgMS0xMy4xLTRjLTEuNS0uNy0yLjctMi00LjMtMi4zIi8+CiAgICAgIDxwYXRoIGQ9Ik00ODEuNSAzMDIuN2MtMy4yIDMuMy0uNyA5LjMtMSAxMy41IDEuOCAxMy4yIDMuOSAyNi41IDguOCAzOSA2IDEyIDE4LjggMTguNSAyNi41IDI5LjIgMi44IDUuMSAxLjggMTEuMyAyLjQgMTdxLjUgMjMgMCA0NmM3IDMuNiAxNC41IDcgMjIuNSA1LjcgNC43LTEuMSAxMy41LTEuOCAxNC41LTYuNWwtMS03OS41Yy0yLjctOC4xLTExLTEyLjMtMTcuMS0xNy41YTE1NiAxNTYgMCAwIDEtMTQuMi0xNi4xYy0yLjYtNC41LTEyLjktNi05LjIgMS42IDIuMiA2LjcgNy43IDExLjYgOS4xIDE4LjYuMyAzLjkgNSAxMSAxIDEzLjJhMjUgMjUgMCAwIDAtMTAuNy0xMGMtNC40LTMuMy0xMS43LTQuNy0xMy4zLTEwLjVhNDMgNDMgMCAwIDAtMTEtMjJjMS41LTcuNCAwLTE2LjctNi40LTIxLjV6Ii8+CiAgICAgIDxwYXRoIGQ9Ik00OTEuNCAzMDQuMmMtMyAuNS0yLjggNC4yLTEuNSA2LjJhMjcgMjcgMCAwIDEgMS4xIDEzLjQgNDQgNDQgMCAwIDEgMTAuNiAyMS43YzAgMyAzLjIgNCA1LjMgNS41IDQuOSAzLjEgMTAuMyA1LjQgMTQuNyA5LjMuOSAxIDEuNiAyIDEgMC0uNy0yLjYtMS01LjQtMy03LjMtMi44LTMtNi4yLTUuNi0xMC4yLTYuNC0uMy00LjItMi4zLTgtNC4xLTExLjYtMi0zLjUtNC4xLTcuMi03LjUtOS40IDAtNi4xIDAtMTIuNS0yLjYtMTguMi0uOC0xLjQtMi0zLjEtMy44LTMuMiIvPgogICAgICA8cGF0aCBkPSJNNDk5LjcgMzA2LjZjLTIgLjYtMS42IDMuMi0xIDQuN2E1NCA1NCAwIDAgMSAxIDEzLjJjMy45IDMgNi4yIDcuNCA4LjQgMTEuNnEyLjIgNC4yIDMuMSA4LjljMy4xIDEgNS44IDMgOC4yIDUtMS0yLjgtMy01LTQuNS03LjdzLTMtNS42LTMuNy04LjdjLTMtMy4xLTQuNi03LjYtNC0xMiAuMi00LjctMS4zLTkuNi00LjUtMTMuMi0uOC0uOC0xLjgtMS43LTMtMS44Ii8+CiAgICAgIDxwYXRoIGQ9Ik01MDkuMiAzMDhjLTEuMi4yLTEuOCAxLjItMi40IDIuMS0uMy45LjggMS44IDEgMi44YTIyIDIyIDAgMCAxIDEuNCAxMC40cTAgMy45IDIgN2E0IDQgMCAwIDEgMy41LTIuOGMuNSAwIDEuNC4yIDEtLjdxLS40LTcuMy0yLjgtMTRhMTAgMTAgMCAwIDAtMi44LTQuNXEtLjQtLjQtMS0uM3oiLz4KICAgIDwvZz4KICAgIDx1c2UgeGxpbms6aHJlZj0iI2JuLWEiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHRyYW5zZm9ybT0ibWF0cml4KC0xIDAgMCAxIDE0NDAgMCkiLz4KICAgIDxwYXRoIGQ9Ik03MTUuNyA0NzZhMzYgMzYgMCAwIDEtMjkuOS0yNGMuMy0yLjIgMyAxLjIgNC4zIDEuNWExOSAxOSAwIDAgMCA4IDIuNmMzLjUgMS41IDUuNyA1IDkuMSA2LjkgMS42IDEuMiA3LjIgMy42IDYuMS0uMy0xLjMtMi0yLjItNC42LTEtNyAxLjgtNC4xIDQuNy03LjcgNy43LTExLjIgMi4xLS43IDMuNiAzLjYgNS4xIDUgMi4xIDMuMyA0LjcgNy4zIDMuNCAxMS4zLTEuMiAxLjUtMiA2IDEuMyA0LjYgNC0xLjggNy4zLTQuOCAxMC42LTcuNiAzLTIgNi43LTIuMSA5LjctNCAxLjUtLjMgNC40LTMuMSA1LTEuNmE0NSA0NSAwIDAgMS03LjQgMTIuMyAzMiAzMiAwIDAgMS0xOC44IDEwLjlxLTYuNiAxLjItMTMuMi42Ii8+CiAgICA8cGF0aCBkPSJNNzMxLjUgNDYwLjJxLjQtNC0xLjctOC0zLjMtNi4yLTgtMTEuOWMtMi44LTEuNi00LjMgMy43LTYuMSA1LjItMi45IDQuMy02LjUgOC43LTYuNyAxNC0xLjYgMi41LTQuNi0yLTUuOS0zLjVhMTkgMTkgMCAwIDEtNC0xMiA1MSA1MSAwIDAgMSAzLjYtMjAuNmMyLTUuNiA1LjEtMTEgNC44LTE3IC4yLTQuNy0uNy05LjctNC40LTEyLjgtMy42LTIuOCAyLjMtMy40IDQuMS0yIDMuMi4zIDQuOSA1LjUgNy44IDQuMiAxLjEtMi43IDEuNC02IDMuOC04LjEgMi4zLTMuMiA0LjcgMS4zIDUuNSAzLjUgMS43IDEuOCAwIDYuNSAyLjYgNi42IDMuMi0yLjMgNS41LTYgOS42LTYuOSAxLjctMSA0LjUgMCAyLjMgMS44LTMgMi45LTUuNiA2LjQtNi4yIDEwLjctLjkgNS4zLjQgMTAuNyAyLjcgMTUuNCA0LjUgOS40IDggMjAgNS43IDMwLjUtMSA0LjYtNC4yIDguNi04IDExLjMtLjUuMy0xLjMuMy0xLjUtLjQiLz4KICAgIDxwYXRoIGQ9Ik03MjYuNyAzODkuNmEyMSAyMSAwIDAgMC01LjYtN2MtMi40IDAtMy45IDMtNS41IDQuNi0xLjEgMi4xLTIuNSA1LjYtNS4zIDIuOS00LjUtMi42LTUuMi04LjMtNS4yLTEzLS4zLTcuNiAyLjgtMTQuNyA1LjUtMjEuNiAxLjctNC4zIDEuMy05LjIuMi0xMy42LTEuMy01LTUuNC04LjYtOC41LTEyLjYuMi0xLjUgNC4yLS43IDUuNy0uNCAzLjQuOSA1LjQgMy44IDcuOSA2IDEuOC0uNiAxLTQuMiAxLjktNS45IDAtMi40IDMuMi01LjUgNC41LTIuMSAyIDIuMiAwIDYuNSAyLjUgNy44IDIuNC0uOSAzLjYtMy41IDUuOC00LjdhOCA4IDAgMCAxIDcuOC0uNWMuOSAyLjItMi42IDQtMy42IDZhMjAgMjAgMCAwIDAtMy44IDE4YzEuNCA1IDMuOCA5LjUgNC43IDE0LjVhNDAgNDAgMCAwIDEtLjUgMTcuMmMtLjkgMy40LTMuOCA1LjYtNi44IDdxLTEtMS4xLTEuNy0yLjYiLz4KICAgIDxwYXRoIGQ9Ik03MTEuNiAzMjYuOWMtMy40LTIuNS00LjUtNC44LTQuNS05LjUgMC0yLjMuNS0zLjYgMi01LjhxMy42LTQuNy0xLjMtMy4zLTcuOCAyLjMtOC00LjNjMC0yLjIuNC0zLjEgMy4zLTYuN3EzLjYtNC4xIDIuOC00LjgtLjYtLjctOSA3LjhhMTI0IDEyNCAwIDAgMS0xMS40IDEwLjZjLTkuOCA2LjYtMTkuMiA3LjYtMjMuNSAyLjUtMi4yLTIuNi0yLjEtNCAuNC01LjZhMjcgMjcgMCAwIDAgNC40LTMuNyA4NiA4NiAwIDAgMSAxNi4xLTExLjZxNS41LTIuOSAyLjEtM2MtMyAwLTEyLjUgNi4yLTE5LjggMTIuOC0yLjEgMi01LjIgNC4yLTYuOCA1YTI1IDI1IDAgMCAxLTEzLjkgMWMtMi4yLS43LTYuMy00LjUtNi4zLTUuOSAwLS4zIDEtMS4xIDItMS44YTMwIDMwIDAgMCAwIDQuNi0zLjJjNS44LTUgMTYuOC0xMC4zIDI1LjUtMTIuMiAyLjgtLjUgMS43LTItMS40LTEuOGE1NiA1NiAwIDAgMC0yNSAxMS43Yy04LjMgNi45LTIwLjggNi4yLTI0LjgtMS4zLS43LTEuMy0xLjItMi41LTEtMi43YTkzIDkzIDAgMCAwIDIwLjQtNy44IDUyIDUyIDAgMCAxIDE4LjEtNi41YzIuOC0uNSAzLTEuOS4zLTIuMi0zLjYtLjQtOSAxLjQtMTguNSA2LTEyLjMgNi4xLTE1LjggNy4yLTIyLjIgNi44LTYtLjQtOS4zLTEuOS0xNC02LjQtMy4yLTMtNy42LTEwLjUtNi44LTExLjRhNjQgNjQgMCAwIDAgMTUuOCAxLjNjOC4zIDAgMTAuNi0uMiAxNS0xLjVhODQgODQgMCAwIDAgMjQtMTIuMSA1OCA1OCAwIDAgMSAzNi44LTEzLjZjMTIuNCAwIDIwLjIgMi44IDI3LjIgOS45IDIuNCAyLjQgNC40IDMuOSA0LjcgMy42cy42LTQuNS43LTkuM2MwIDAgMy43LS40IDQuNS43IDAgNy43IDAgOC40IDEuMiA4LjRxMS4yLS4xIDItMmMxLTIuNSA1LTYgOS4yLTguMiA5LTQuNSAyNC43LTQuNyAzNy4zLS4zYTYyIDYyIDAgMCAxIDE2LjcgOS41IDkwIDkwIDAgMCAwIDI0IDEyYzYuOCAyIDE5IDIuNSAyNS4xIDFsNS40LTFjMi4zIDAtMS42IDcuNi02LjIgMTIuMS04LjQgOC4yLTE5LjMgOC4xLTM0LjYtLjEtOS42LTUuMi0yMS04LTIxLTUuMnEwIDEgMS41IDEgNSAwIDE4LjcgNi41YTU0IDU0IDAgMCAwIDE4LjMgNi41cTMuNSAwIC4yIDQuNy0zLjUgNS0xMS43IDVjLTUuMyAwLTguMy0xLjEtMTMtNS04LTYuNi0yNy42LTE0LTI2LjktMTBxLjIgMSAzLjIgMS41YTU2IDU2IDAgMCAxIDIzLjEgMTFsNS45IDQuM2MxLjEuNiAxLjEuOC4yIDIuNS0xLjQgMi44LTUuMiA0LjktOS4yIDUuM3EtNy42IDEtMTQuNS01Yy0xMC04LjMtMTkuMy0xNC4zLTIyLjMtMTQuM3EtMy43LjEgMyAzLjdhODAgODAgMCAwIDEgMTUuOCAxMWMyIDEuOSA0LjMgMy43IDUgNC4xIDEuOSAxIDEuOCAyLjQtLjIgNXMtNS40IDMuOC05LjcgMy4zYy04LjYtLjktMTUuNC01LTI2LTE2YTcxIDcxIDAgMCAwLTguMi03LjhxLTIgLjIgMi4yIDVjMy40IDMuNyA0IDUuOCAyLjcgOS0xLjEgMi42LTMgMy4zLTYuOCAyLjJxLTYtMS41LTIgMy4xYzMuOCA0LjkgMy4zIDEwLjctMS41IDE0LjhhMTIgMTIgMCAwIDEtMy40IDIuM3EtLjgtLjEtMi4zLTIuNC00LjMtNi45LTguNyAwbC0yIDN6Ii8+CiAgICA8cGF0aCBkPSJtNzI2LjcgMjMzLTUuMiA0LTQuNi0zLjR2MjcuOGg5Ljh6Ii8+CiAgICA8cGF0aCBkPSJNNjk0LjkgMjA0LjNhODggODggMCAwIDEtOSAzMi4zbDExLjEtMTAuMyA3LjcgOS4yIDguNC05LjQgOC41IDggOC4yLTguMyA4LjUgMTAgNy40LTguMiAxMi42IDljLTQuNi0xMC0xMC43LTE4LjYtMTAtMzIuOC0xMi4xIDktNDEgMTAuNi01My40LjR6Ii8+CiAgICA8cGF0aCBkPSJNNzE3IDE5Ny42cS03LS4yLTEzLjQgMWEyMCAyMCAwIDAgMC03LjggM2MuMyA4LjYgNDEgMTIuMSA1MS45LjJhMjAgMjAgMCAwIDAtOC4yLTMuM2MtNC0uOC04LjYtLjgtMTIuOS0xdjcuMUg3MTd6Ii8+CiAgICA8cGF0aCBkPSJNNzI0LjkgMTU0aC02LjN2NDkuNGg2LjR6Ii8+CiAgICA8cGF0aCBkPSJtNzI0LjkgMTU1LjItMi40IDIzLjcgMjQuMyAxMS45LTEyLjMtMTYuNSAxNi44LTUuNXptLTIuNy02LjFjLTMuNyAwLTYuNCAxLjQtNi40IDNzMi43IDMgNi40IDMgNi40LTEuNCA2LjQtMy0yLjctMy02LjQtMyIvPgogIDwvZz4KICA8ZyBmaWxsPSIjZjdlMDE3Ij4KICAgIDxwYXRoIGQ9Ik0zMTQgMzc1LjlxMy44LTEuMSA1LjMtNS42Yy41LTEuNi45LTMuMi44LTMuNi0uMi0xLTEuNC0xLTIuNi4xLS45LjctMSAxLjEtLjggMi42LjcgMy43LS43IDQuNy03LjcgNS40LS43IDAtMi44IDAtNC41LS4zcS01LjEtLjYtMy40IDFsMi4xLjljMS45LjUgOC44LjIgMTAuOC0uNW0xNC43LS42Yy40LS40IDEuNy0xIDMtMS41cTIuNC0uNiAzLjMtMi4yYzIuMS0zIDEuNy01LjctMS4zLTkuMy0xLjctMi0yLjQtMS45LTMuNy4zLTEuMiAxLjgtMS4xIDIgLjUgMi40cTEuNC40IDIuMSAxLjYgMi43IDQuOC0xLjQgNWMtMi40IDAtMyAuNC0zLjcgMmwtLjYgMS45YzAgLjYgMSAuNSAxLjgtLjJtLTQuOC0zLjVjLjQtMS4zLjYtMy41LjUtOGEzMyAzMyAwIDAgMC0uMy02LjRjLS40LS40LTIuMy44LTIuNiAxLjdhMyAzIDAgMCAwIC41IDIuMWMuNiAxLjIuNyAyLjQuNSA3cS0uNSA4LjkgMS40IDMuNiIvPgogICAgPHBhdGggZD0ibTMxMi42IDM2OSAuNy01Yy4xLTEuNy41LTMuOC43LTQuN3ExLTMuNS0xLjgtMS42bC0xLjMgMSAuMiAzLjNjLjMgMy0uMiA4LjUtLjkgMTAuN3EtLjMuOS45LS41Yy42LS43IDEuMy0yLjIgMS41LTMuM3ptLTEwIDEuNmMyLjQtMiAyLjEtNS42IDIuNy04LjQgMC0xLjkgMS4yLTQuMS40LTUuOC0yLjMuNC0zLjcgMi42LTIuNSA0LjcgMCAyLjUgMCA1LjItMS4zIDcuNC0xIDEuNS00LjQgMS4xLTQuMi0xIC44LTMtMi45LTEuNS00LjMtLjctMS4xLjgtMy41LjktMi42LTEtLjYtMi43LTMuOS0xLTUuNy0xLTEuNyAwLS4xLTMuNS0yLjYtMy00LjUtLjMtOS41LjEtMTMuNS0yLjYtMi4zLTEuMS0yLTMuOS0uNy01LjcgMS40LTIuNCAxLjgtNS41IDQtNy40IDIuMy0yLjEtMi0xLjItMy0uNS0yLjIgMS4yLS4yIDQuMy0yIDYtMSAxLjgtMi40IDQuMi00LjggMy45LTMuNS0uNy01LjUtNC04LTYtMi4yLS41LTEgMy40LjIgNC4yYTIyIDIyIDAgMCAwIDcuNCAzLjZjMi42LS41IDIuNyAzIDUgMy41IDQgMiA4LjYgMi41IDEzLjEgMi44IDEuOC4xLjggMy4zIDMuMSAyLjYgMS4zLjQgNC4zLS41IDQuNCAxLTIgMi40IDEuOSAyLjMgMy4zIDIgMS45LS40IDQuMi0xIDQuNyAxLjQgMS41IDEuNyA0LjMgMS40IDYuMi41eiIvPgogICAgPHBhdGggZD0iTTI2Mi44IDM1MC40YTI0IDI0IDAgMCAwIDIuNC00LjIgMTYgMTYgMCAwIDEgMi0zLjZxMS42LTItMS40LTEuNi0xLjQuMi0xLjUgMS41YTIzIDIzIDAgMCAxLTIuNSA3Yy0xLjcgMi41LTEuNyAyLjYtMSAyLjZxLjYtLjIgMi0xLjdtLTI1LTE1LjdjLTEuOSAwLTIgMS4yLS4yIDEuOHExLjQuNCAyLjMgMi4zYzEuNyAzLjUgMi44IDQuMiA3LjUgNC42bDMgLjIuMiAxLjlxLjEgMS43LjUgMS44bDIuNi0xYzIuMi0xLjIgNC4zLTMuOCA0LjMtNS41IDAtMS0xLjgtMi4yLTMuNC0yLjItLjcgMC0yIC42LTMuMSAxLjQtMy40IDIuNC03IDItOS0xLjJxLTIuMy00LTQuNy00em0xNi4zIDYuNXExLjMgMCAuNiAyYS45LjkgMCAwIDEtMS43IDBjLS40LTEgLjEtMiAxLTJ6bTEyNi41LTRjLTEuMyAwLTEuNi4yLTIuNCAxLjQtMS4zIDEuOS0xLjQgNi0uMiA3LjQuNy45LjguOSAyLjMuMiAyLjItLjkgMi42LS44IDIuNS4zIDAgMy00LjIgOC43LTguNiAxMS43YTEwIDEwIDAgMCAwLTIuNCAyYy0uMy44IDEuMy43IDMuMy0uNGEyMSAyMSAwIDAgMCA3LjktOGMxLjEtMi4zIDEuMy0zIDEuNS03IDAtMy44IDAtNS0uNi02LjItLjgtMS40LTEtMS41LTIuOC0xLjVoLS41em0uMSAyLjVjMSAwIDEgLjIgMS4yIDEuNnEuMSAxLjQtLjcgMi4zYy0uOC43LTEgLjctMS42LS40LTEtMS42LS40LTMuNSAxLjEtMy41bS0yMC4yIDI4LjVjMy45LTIgNi4yLTQuMSA3LjYtNy4ybDEuMy0zLjFjMC0uNi0xLjktMS41LTMtMS41cy0xLjQtLjgtMS0zYy41LTIuMSAwLTQuOC0xLTQuOHEtLjcuMS0xLjMgMS4xYy0uNiAxLS43IDEuNC0uMiAyLjdxMSAzLTEuNyA0LjktMS4zIDEtMS4zIDJsLjEgMSAyLjEtMSAyLTEuMiAxLjEgMXExLjEuOCAxLjIgMS43YzAgMi40LTYuOCA2LjQtMTEuNCA2LjgtMi41LjItMyAwLTMuOC0uOHEtMS0xLS43LTJsLjUtMi42cS41LTMtMiAuNmMtMS4yIDItMS42IDQuMS0uOSA1LjIuNiAxIDQuNCAxLjggNy4yIDEuNnEyLjUgMCA1LjItMS40bTI2LTE0LjVjMi40LTIuNSAzLjUtNS41IDMuNS0xMHYtMy41bDItMWMyLjctMS4yIDUuMi0zLjcgNS4yLTUuMXEwLTIuMS0xLjguMmMtLjkgMS4xLTIgMS44LTYgMy43LTEgLjQtMS4xLjctMS40IDUtLjIgNS0xIDYuOC0zLjcgMTAuMi0xLjcgMi0xLjggMi40LS42IDIuNC41IDAgMS44LS45IDIuOC0yem0tMjYuNy0yLjhjLjItLjctMS4yLTEuMi0xLjctLjZxLS41LjQtLjIuOWMuNC42IDEuNi40IDEuOS0uM20zNi44LTkuNWMuMy0uOC0xLjEtMS4zLTEuNy0uN3EtLjQuNS0uMSAxYy40LjYgMS42LjQgMS44LS4zbS00NC4zLTI1LjlxLTEuNCAxLTIuMSAyLjNjLS41LjMtLjEuNi4xIDEgMS43IDEuNyAyLjQgNC4yIDMuMiA2LjUuOCAyLjcgMS44IDUuNiAxIDguNC0uMyAxLTEuMiAyLjEtMi40IDEuOC0yLS4xLTQtLjctNi0uNy0xLjkuMS0zLjMgMS44LTUuMSAxLjYtMS4yIDAtMS4yLTIuNC0yLjItMS43LS42IDEuMy0uMyAyLjctLjQgNHEuNS4zIDEuMS4yaDMuN2MuMiAxLjIuMiAyLjcgMSAzLjdxMiAuNCA0LS41YzEuMi0uNiAxLjQtMi4xIDEuOC0zLjMuNC0xLjMgMi0xIDMtMS41YTYgNiAwIDAgMCA0LTUuN2MtLjItMy45LTEuNi03LjQtMi44LTExbC0xLjUtNC45em0tNiAyMS44YzEuMyAwIDEuOSAxLjYgMS42IDIuNy0uNSAxLjUtMi40LjYtMi43LS41LS43LTEtLjMtMi4zIDEtMi4yeiIvPgogICAgPHBhdGggZD0iTTI5NiAzMjQuOHEtMSAwLTIgLjdjLTMuNSAyLjUtNC41IDUuNC0yIDYuNnEyLjYgMS4xLTEuNSAzLjJjLTQgMi03LjUgMS43LTE0LjItMXEtMi4zLTEtMS43IDFjLjQgMS41IDEuOCAyLjMgNS4xIDMgMy42IDEgOCAuNyAxMC44LS41YTE0IDE0IDAgMCAwIDQuMy0zLjRsMi4yLTIuMyAyLjUuM2MzLjEuNCAzLjIuNCAzLjIgMS45IDAgMS4yIDAgMS4yIDIuOSAxLjVsNC43LjJxMS45IDAgMi40LjljLjYuNy45LjggNS42LjQgNC40LS40IDUuMi0uNCA3LjIuM3EyLjMuNiA0LjEuNWMzLjQtLjQgOC0zLjEgOC43LTUuMSAwLS4zIDEuMy0uNyAyLjctMXE1LTEuMS40LTEuOGEyMyAyMyAwIDAgMS00LjYtMS4xIDEyIDEyIDAgMCAwLTMuNS0uOWMtMS43IDAtMy4zIDEtMy4zIDIuMiAwIC43LjIuOCAyLjMuNiAxLjgtLjIgMi40LS4xIDMuNC43cTEuMS45IDEgMS4zYy0uNS44LTQuNSAyLjYtNi4yIDIuOWE1IDUgMCAwIDEtMy0uNWMtMS42LS44LTMuOC0uOS00LjMtLjJxLS4zLjQtMS4zLS41bC0xLTEtMi40IDFxLTMuNCAxLjYtMy4zLS4yYzAtLjUtLjctLjYtNC4yLS4zLTMuOS4yLTQuMy4xLTUtLjdxLTEtLjktLjItMS43Yy40LS44LjQtMSAwLTEuNXEtLjQtLjYtMi41IDBjLTMuOSAxLTUgLjUtNS0yLjVxLS4yLTMtMi4zLTNtLTEgMi44cS4zIDAgLjcuNC41LjYuMyAxLjNjLS4zLjktMiAuOS0yLjMgMHEtLjMtLjguNS0xLjN6Ii8+CiAgICA8cGF0aCBkPSJNMjg4IDMzMC40YzIuNC0xLjUgMi40LTEuNCAyLjctNS41LjItMyAuMi0zLjItLjYtMy4ycS0xLjggMC0xLjggMy43YzAgMS42LS4yIDIuMy0xIDMtMiAyLTYuOCAxLjEtNy41LTEuM3EtLjMtMSAxLjEtM2MyLjEtMyAxLjctMy44LTEtMS41LTEuNyAxLjYtMiAxLjYtMS43LjNxLjQtMi0xLjgtMS40LTEuMS4yLTEuMyAxLjYtLjMgMS4yLTEuMyAxLjVjLTEuMi4zLTMuMi0uOC0zLjItMS44IDAtLjcgMy00LjQgNi45LTguNCAxLjQtMS41IDIuNi0zIDIuNi0zLjFxLS4yLS40LTEuNy0uNC0yIDAtMS44LjhjMCAuNC0xLjkgMy00LjMgNS43LTUgNS42LTUuNCA2LjctMyA4LjJhNiA2IDAgMCAwIDYuNi0uMmwxLjYtMS4xdjJjMCAyLjUuNSAzLjUgMi41IDQuNWE4IDggMCAwIDAgOC0uNG0xMDQuNC0zNC42Yy0xLjggMS4xLS40IDMuNCAwIDUtLjggMi0zLjUgMi42LTUuNSAzLTIuOC41LTQuOCAyLjgtNS44IDUuMy0uNiAxLjYtMiA0LTMuNSAxLjYtMS4zLTEuMy0zLjctMi40LTUuMi0uOC0xLjIgMS4xLTEuNSAyLjctMiA0LjItLjctMS4xLTEtMi44LTIuNC0zLjItMi40LjMtMS41IDMuMy0uNCA0LjUgMSAxLjUgMiAzLjMgMSA1LTEgMi00IDMuNC01LjcgMS43LTEuNi0uOS0uNS00LTIuMi00LjItLjguNi0uOCAzLjktMi4xIDIuMS0xLTEuNS0uNC0zLjYtMS42LTQuOS0xLjMuMi0yLjQgMi41LTIgMy43IDEuOCAyLjQgMi42IDUuNCAzLjMgOC4zLjQgMS4yLS4xIDMuNSAxIDQgLjctMS45IDAtNCAuNi01LjkgMS44LS4yIDMuNy42IDUuNS4yIDIuNy0uMyA0LjctMi42IDUuNi00LjlxLjMtMi43LS4xLTUuNGMyIC40IDQuMi40IDYuMiAxIDEgMS41LS4zIDMuNy0uNiA1LjMtMSAzLjQtMy43IDUuOC02LjIgOC0xLjEuNy0xLjIgMi40LjMgMS41YTE1IDE1IDAgMCAwIDcuNS04YzEuMS0yLjYuMi01LjUgMS04LjEgMS0yIDMuNS0xLjYgNS40LTEuNnMzLjUtMi4zIDIuOS00LjJjLS42LTIuMiAxLjctMy4yIDMuMi00IDIuMS0xIDMuNy0zLjEgMy41LTUuNSAwLTEuMyAwLTMuNi0xLjctMy43bS03LjMgMTIuNWMyLjIuNi0uNCA0LjgtMS42IDIuMS0uNC0xIC41LTIuMSAxLjYtMi4xbS0xMC4zIDNjMi45LS4xIDEuOCA0LS42IDIuMi0xLjMtLjctLjktMi4yLjYtMi4yTTI3MCAzMjcuNnEwLS42LS42LS43Yy0uNyAwLTEuMi43LS45IDEuMy40LjcgMS4zLjMgMS41LS42bTM0LTMuNnEwLTEtLjgtLjhjLTEuMS4yLTEuMyAxLjctLjEgMS43cS45IDAgLjktMXptLTQyLTIwLjRjLTEuMy0uMy0yLjIuOS0yLjcgMnEtMS40IDIuOC00IDQuMy0yIC40LTMuOS0uOGMtMS4zLS43LTEtMi4zLTEuNi0zLjQtMS0uOC0yLjcuMy0yLjYgMS41LS4xIDEuNiAxLjMgMi41IDIuNiAzLjEgMSAuNyAyLjYgMSAzIDIuMyAwIDEuMS40IDIuNCAxLjcgMiAxLjUgMCAyIDEuOCAxLjMgMi45YTYgNiAwIDAgMC0uNyA0Yy43LjcgMS40LTEgMi0xLjRsMS0xLjRxNCAuNCA4IC40YzIgMCAzLjUtMS4yIDQuNy0yLjYgMS44LTEuOCAzLjItMy45IDUuMS01LjQgMS40LS40LjctMy0uOC0yLjItMS4zLjUtMS43IDItMi42IDIuOWEzMSAzMSAwIDAgMS01IDUuMmMtMS41LjYtMy4xLjMtNC42IDAtLjYtLjUgMS4yLTEgMS41LTEuNnExLjQtMS4xIDIuMy0yLjdjLS41LTEtMS45LTEtMi45LTEtMi40LjItNC4zIDIuMy02LjggMi41LTEuOSAwLS45LTIgMC0yLjdxMi41LTMgNS4xLTUuN2MuNS0uNiAyLjMtMS4yIDEuMi0ycS0uNi0uMi0xLjMtLjJtMS4yIDEwYzEuMy43LS44IDEuOC0xLjYgMS43LTEuMS4zLTEuMi0uOC0uMi0xcS45LS42IDEuOC0uN20tMy44IDIuNmMuNyAwIDIuMi43LjggMS4xLTEgLjgtMi0uOC0uOC0xLjEiLz4KICAgIDxwYXRoIGQ9Ik0yODkuNCAzMTcuOGMwLTEtMS42LS44LTEuOC4ycS0uMy44LjguNiAxLS4xIDEtLjhtNzQuNy02LjZjLjItLjktMS0xLjUtMS43LS44czAgMS45LjggMS43cS42LS4xIDEtLjl6TTI0OCAzMDIuMWMxLjEtMSAxLjItMS4xLjctMy4zLS44LTMuMS0uNy0zLjUuNS0zLjggMS41LS4zIDUuMyAxLjcgNiAzLjMuOCAxLjMuNyAxLjQtLjQgMi40LTEuMiAxLjEtMS4yIDIuNCAwIDIuNCAxIDAgMy43LTIuNiAzLjctMy41IDAtMS4zLTMtNC40LTUuNC01LjVhMTEgMTEgMCAwIDAtNC42LTFjLTMuMSAwLTMuNS43LTIuNyA0LjJxMS40IDYuNC0zLjcgMS42YTEwIDEwIDAgMCAxLTMuNS04LjZxMC02IDUuMS02LjYgMy41LS42IDAtMS4yYy0zLjYtLjYtNi42IDEuOC03LjcgNi0xLjMgNC43IDEuNiAxMC40IDYuNyAxMy4zIDIuNyAxLjUgMy43IDEuNiA1LjMuM20xMzkuMi01LjJxLjUtLjUuNS0xLjQuMS0xLjMgMS4xLTIuNCAxLTEuNCAxLTEuOGMwLS44LTEuMy0uOC0yLjMgMHEtMS44IDEuNC0yIDBsMS4yLS45cTIuNC0xLjEuNC0yLjFjLTEuNy0uOC0zLjUuNi0zLjYgMy0uMSAxLjYgMCAxLjggMS4yIDIuNXMxLjMgMSAxLjEgMnEtLjMgMi42IDEuNCAxLjFtMTMtMS40cTEuNi0xLjYgMS44LTIuMnQxLjktMmMyLjgtMiAzLjUtNCAyLjItNy4zLS41LTEuMy0yLTMtNS41LTZhMjYgMjYgMCAwIDAtNS40LTQuNGMtLjkgMC0uNyAzLjQuMiAzLjcgMS43LjYgMi44IDEuMyA1LjQgMy43IDMuMiAyLjggNC42IDUuNSAzLjggNy0uNyAxLjQtMS43IDEtNC41LTJhMTQgMTQgMCAwIDAtMy4yLTIuOXEtLjUuMS0uNSAxLjQtLjEgMS40IDIgMy41YzIuMyAyLjYgMi41IDQuMS43IDUuNWwtMS40IDFhMzMgMzMgMCAwIDAtOS0xMHEtLjUgMC0uNSAxLjRjMCAxLjMuMiAxLjcgMS4yIDIuMmEzOCAzOCAwIDAgMSA3IDdsMS44IDJ6bTYtMTYuOGMtLjUtMS4yLTguNC05LjQtOS4zLTkuNHEtLjYgMC0uNCAxLjhjMCAxLjYuMyAxLjggMS40IDIuMWEyMCAyMCAwIDAgMSA0LjYgMy43IDE3IDE3IDAgMCAwIDMuNyAzem0tNDcuOCA5Mi42YTEuMiAxIDAgMSAxLTIuMyAwIDEuMiAxIDAgMSAxIDIuMyAwbTQuMi0xLjRhMS4yIDEgMCAxIDEtMi40IDAgMS4yIDEgMCAxIDEgMi40IDAiLz4KICA8L2c+Cjwvc3ZnPgo=" alt="BN" width="22" height="15"><span>Brunei · 브루나이</span></div>
+      <h1>브루나이 거래 한국 수입업체 디렉토리
+        <span class="en">Korean Importers Sourcing from Brunei</span></h1>
+      <p>브루나이산 제품을 수입 중인 한국 기업을 규모·연락처와 함께 확인하실 수 있습니다.
+        해외 공급기업과 무역진흥기관을 위한 KOIMA 바이어 매칭 자료입니다.<br>
+        <span style="color:#8b93b4">Verified Korean buyers actively importing from Brunei &mdash;
+        prepared by KOIMA for overseas suppliers and trade-promotion partners.</span></p>
+      <a href="#directory" class="hero-cta">수입업체 목록 바로가기 · Browse Importers ↓</a>
+    </div>
+    <div class="hero-r">
+      <div class="kpi"><div class="n" id="k1">—</div>
+        <div class="l">거래 수입업체<br>Importers</div></div>
+      <div class="kpi"><div class="n" id="k2">—</div>
+        <div class="l">중대형 바이어<br>USD 10M+</div></div>
+      <div class="kpi"><div class="n" id="k3">—</div>
+        <div class="l">이메일 보유<br>Contactable</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="controls">
+    <div class="cgroup">
+      <span class="clbl">업체명 · 사업자번호 검색 <span class="en">/ Search by name or business no.</span></span>
+      <input type="text" class="search-in" id="q" placeholder="한글·영문 업체명 또는 사업자번호 입력">
+      <div class="ctools">
+        <div class="toggle" id="mailTg"><div class="sw"></div>
+          <span>이메일 보유 업체만 · Email only</span></div>
+        <button class="btn-reset" id="btnReset">↺ 초기화 Reset</button>
+      </div>
+    </div>
+    <div class="cgroup">
+      <span class="clbl">수입 규모대 <span class="en">/ Annual import scale</span></span>
+      <div class="scale-row" id="scaleRow"></div>
+    </div>
+  </div>
+
+  <!-- ===== COUNTRY INTELLIGENCE ===== -->
+  <div class="intel">
+
+    <!-- 교역 스냅샷 -->
+    <div class="ibox">
+      <div class="ibox-h">
+        <span class="ic">◴</span>
+        <h3>한-브루나이 교역 스냅샷
+          <span class="en">Korea–Brunei Trade Snapshot</span></h3>
+      </div>
+      <div class="trade-stats">
+        <div class="ts-item"><div class="tn">25</div>
+          <div class="tl">브루나이 거래 한국 수입업체<br>Korean importers</div></div>
+        <div class="ts-item"><div class="tn">18</div>
+          <div class="tl">중대형 바이어 (USD 10M+)<br>Mid–large buyers</div></div>
+        <div class="ts-item"><div class="tn">12</div>
+          <div class="tl">이메일 보유 (영업 연락용)<br>Contactable</div></div>
+      </div>
+      <p class="lead" style="margin:11px 0 0">브루나이는 에너지·자원 중심의 소규모 교역국으로, 한-아세안 FTA와 RCEP이 적용됩니다.<br>
+        <span style="color:#b5b5ad">* 거래업체 수는 본 데이터베이스 기준</span></p>
+    </div>
+
+    <!-- FTA 적용 현황 -->
+    <div class="ibox">
+      <div class="ibox-h">
+        <span class="ic">§</span>
+        <h3>적용 가능 FTA · 특혜관세
+          <span class="en">Applicable FTAs &amp; Preferential Tariffs</span></h3>
+        <span class="ibox-note">정보 안내용 · 세율은 공식 포털 확인</span>
+      </div>
+      <p class="lead">한-브루나이 교역에는 <b>한-아세안 FTA와 RCEP이 적용</b>되며, 수입자는 품목별로 더 유리한 특혜세율을 선택할 수 있습니다.</p>
+      <div class="fta-list">
+        <div class="fta-row">
+          <div class="fn"><b>한-아세안 FTA (AKFTA)</b>
+            <div class="fd">아세안 10개국 대상 · 상호대응세율 제도 운영</div></div>
+          <span class="fbadge" style="background:#e4f3ea;color:#1a7a4c">발효 중</span>
+        </div>
+        <div class="fta-row">
+          <div class="fn"><b>RCEP</b>
+            <div class="fd">역내포괄적경제동반자협정 · 누적 원산지 기준 활용 가능</div></div>
+          <span class="fbadge" style="background:#e4f3ea;color:#1a7a4c">발효 중</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 관세·통관 확인 (공식 포털 링크) -->
+    <div class="ibox wide">
+      <div class="ibox-h">
+        <span class="ic">⎙</span>
+        <h3>품목별 관세율 · 원산지 · 통관 확인
+          <span class="en">Tariff, Origin &amp; Customs — Official Lookup</span></h3>
+        <span class="ibox-note">실시간 세율은 아래 공식 포털에서 조회</span>
+      </div>
+      <p class="lead">정확한 품목별(HS코드) 관세율과 원산지결정기준은 수시로 변동되므로,
+        아래 <b>관세청 공식 포털</b>에서 직접 조회하시기 바랍니다.
+        본 페이지는 안내 목적이며 세율 수치를 직접 제공하지 않습니다.</p>
+      <div class="linkrow">
+        <a class="linkbtn" href="https://www.customs.go.kr/ftaportalkor/main.do" target="_blank" rel="noopener">
+          FTA 포털 · 수입세율 조회 <span class="ar">↗</span></a>
+        <a class="linkbtn" href="https://unipass.customs.go.kr/" target="_blank" rel="noopener">
+          관세청 UNI-PASS · 통관 <span class="ar">↗</span></a>
+        <a class="linkbtn" href="https://www.customs.go.kr/" target="_blank" rel="noopener">
+          관세청 · 관세법령정보 <span class="ar">↗</span></a>
+        <a class="linkbtn" href="https://www.kotra.or.kr" target="_blank" rel="noopener">
+          KOTRA · 브루나이 시장정보 <span class="ar">↗</span></a>
+      </div>
+    </div>
+
+    <!-- 카운터파트 기관 -->
+    <div class="ibox wide">
+      <div class="ibox-h">
+        <span class="ic">⚐</span>
+        <h3>카운터파트 · 협력 기관
+          <span class="en">Counterpart Institutions &amp; Contacts</span></h3>
+        <span class="ibox-note">대사관 정보는 확인 후 갱신 예정</span>
+      </div>
+      <div class="cp-grid">
+        <div class="cp-card">
+          <div class="cprole">주한 대사관 · Embassy in Korea</div>
+          <div class="cpname">주한 브루나이 대사관<br>Embassy of Brunei in Korea</div>
+          <div class="cpinfo">서울 소재<br>
+            <span class="ph">[ 주소·전화·이메일 — 대사관 확인 후 입력 ]</span></div>
+        </div>
+        <div class="cp-card">
+          <div class="cprole">권역 협력 · ASEAN-Korea</div>
+          <div class="cpname">한-아세안센터<br>ASEAN-Korea Centre</div>
+          <div class="cpinfo">서울 소재 · 한-아세안 무역·투자·문화 협력<br>
+            <span class="ph">[ 협력 협의 후 연락처 입력 ]</span></div>
+        </div>
+        <div class="cp-card">
+          <div class="cprole">KOTRA 무역관 · Brunei</div>
+          <div class="cpname">KOTRA KOTRA 동남아 무역관</div>
+          <div class="cpinfo">브루나이 소재<br>
+            <a href="https://www.kotra.or.kr" target="_blank" rel="noopener">kotra.or.kr ↗</a></div>
+        </div>
+        <div class="cp-card">
+          <div class="cprole">바이어 매칭 · KOIMA</div>
+          <div class="cpname">KOIMA 바이어 매칭 서비스</div>
+          <div class="cpinfo">검증된 한국 수입업체 연결<br>
+            <a href="mailto:seobh@koima.or.kr">seobh@koima.or.kr</a></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 공동 운영 배너 -->
+    <div class="joint">
+      <div class="jl">
+        <div class="jt">대사관 공동 운영 디렉토리 · Jointly Operated Directory</div>
+        <div class="jd">본 국가별 디렉토리는 KOIMA와 주한 브루나이 대사관의 공동 협력으로
+          운영될 수 있습니다. 대사관은 자국 수출기업에 공식 채널을 제공하고,
+          KOIMA는 검증된 한국 바이어 네트워크를 연결합니다.</div>
+      </div>
+      <div class="jbadges">
+        <span class="jbadge">KOIMA<br>한국수입협회</span>
+        <span class="jx">×</span>
+        <span class="jbadge">EMBASSY<br>OF BRUNEI</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="list-head" id="directory">
+    <div class="lh-t">
+      <span class="lh-ic">▤</span>
+      <div><h2>브루나이 거래 수입업체 목록</h2>
+        <span class="lh-en">Korean Importer Directory · 검색·필터로 바이어를 찾으세요</span></div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <div class="rescount"><b id="resN">0</b> 개사 · companies</div>
+    <div class="tb-r">
+      <select class="sortsel" id="sortSel">
+        <option value="scale">수입규모 큰 순 / Scale ↓</option>
+        <option value="scale-asc">수입규모 작은 순 / Scale ↑</option>
+        <option value="name">업체명순 / Name A–Z</option>
+        <option value="ctry">거래국 많은 순 / Most markets</option>
+      </select>
+      <button class="btn-csv" id="btnCsv">⤓ CSV</button>
+    </div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+  <div class="pager" id="pager"></div>
+
+  <footer>
+    <div>출처 · Source: <span class="mono">관세청 수입실적 / Korea Customs Service</span>
+      &nbsp;·&nbsp; 데이터 갱신 · Updated <span class="mono" id="ftUpd">—</span></div>
+    <div>KOIMA 바이어 매칭 서비스 · Buyer Matching Service &nbsp;|&nbsp;
+      문의 · Contact: seobh@koima.or.kr</div>
+  </footer>
+</div>
+
+<div class="ov" id="ov"><div class="modal" id="modal"></div></div>
+
+<script>
+const DATA = {"updated":"2026.03.10","total":25,"scale":{"6":["50만불 미만","Under USD 0.5M"],"7":["50만~100만불","USD 0.5–1M"],"8":["100만~300만불","USD 1–3M"],"9":["300만~500만불","USD 3–5M"],"10":["500만~700만불","USD 5–7M"],"11":["700만~1,000만불","USD 7–10M"],"12":["1,000만~3,000만불","USD 10–30M"],"13":["3,000만~5,000만불","USD 30–50M"],"14":["5,000만~1억불","USD 50–100M"],"15":["1억불 초과","Over USD 100M"]},"records":[["1248100998","삼성전자(주)","SAMSUNG ELECTRONICS","","0544795075",15,["중국","베트남","일본","미국","싱가포르","대만","말레이시아","이스라엘","홍콩","독일","태국","필리핀","체코공화국","네덜란드","오스트리아","프랑스","멕시코","인도","인도네시아","영국","캐나다","튀르키예","헝가리","아일랜드","아랍에미리트연합","슬로바키아","호주","남아프리카공화국","폴란드","나이지리아","이탈리아","스위스","코스타리카","브라질","케냐","뉴질랜드","파나마","벨기에","이집트","콜롬비아","사우디아라비아","러시아연방","룩셈부르그","카타르","칠레","덴마크","스웨덴","페루","우크라이나","포루투갈","스페인","요르단","기타국","노르웨이","카자흐스탄","리투아니아","핀란드","볼리비아","엘살바도르","슬로베니아","그리스","사이프러스","라트비아","과테말라","아르헨티나","리히텐슈타인","이라크","쿠웨이트","루마니아","튀니지","크로아티아","캄보디아","아르메니아","베네주엘라","모리셔스","아이슬란드","우간다","영령캐이맨군도","푸에르토리코","세네갈","세르비아","니카라과","파키스탄","도미니카공화국","리비아","파라과이","방글라데시","조지아","에쿠아도르","모로코","우즈베키스탄","온두라스","몽골","불가리아","알제리","탄자니아","우루과이"]],["3018702315","주식회사 포스코","POSCO","mongyoo@posco.com","0542201335",15,["호주","캐나다","브라질","인도네시아","남아프리카공화국","중국","말레이시아","일본","인도","모잠비크","미국","태국","칠레","카자흐스탄","대만","바레인","페루","마다카스카르","러시아연방","콜롬비아","이탈리아","독일","오만","싱가포르","스웨덴","베트남","벨리제","가봉","멕시코","아랍에미리트연합","부탄","슬로베니아","프랑스","에스토니아","스페인","오스트리아","헝가리","스위스","영국","노르웨이","체코공화국","네덜란드","벨기에","룩셈부르그","루마니아","잠비아","핀란드","보스니아-헤르체고비나","튀르키예","폴란드","슬로바키아"]],["1268103725","에스케이하이닉스 주식회사","SK hynix Inc.","daehi.kim@sk.com","0439078562",15,["중국","일본","미국","싱가포르","말레이시아","대만","이스라엘","호주","베트남","독일","홍콩","네덜란드","태국","인도네시아","페루","오스트리아","체코공화국","영국","프랑스","폴란드","필리핀","멕시코","카타르","덴마크","스위스","헝가리","이탈리아","아일랜드","아이슬란드","캐나다","벨기에","코스타리카","리히텐슈타인","포루투갈","브라질","인도","슬로바키아","핀란드","에스토니아"]],["1048158195","주식회사포스코인터내셔널","POSCO INTERNATIONAL","","027592500",15,["중국","일본","미국","칠레","호주","베트남","태국","카타르","파푸아뉴기니","튀르키예","스웨덴","우즈베키스탄","말레이시아","마다카스카르","홍콩","독일","카자흐스탄","인도네시아","인도","프랑스","네덜란드","아르헨티나","스페인","멕시코","싱가포르","체코공화국","캐나다","러시아연방","사우디아라비아","미얀마","방글라데시","코스타리카","콜롬비아","브라질","오만","대만"]],["1208155297","엘지디스플레이(주)","LG Display","rovotlove@lgdisplay.com","0544784156",15,["중국","대만","베트남","일본","미국","아일랜드","태국","필리핀","싱가포르","독일","말레이시아","프랑스","멕시코","홍콩","폴란드","오스트리아","이탈리아","캐나다","마카오","튀르키예","카메룬","세르비아","안도라","인도","체코공화국","인도네시아","에쿠아도르","이스라엘","영국","루마니아","티모르"]],["1208755101","(주)팜한농","FARM HANNONG","","0231595864",15,["중국","일본","인도","미국","독일","인도네시아","아랍에미리트연합","콜롬비아","대만","모로코","프랑스","캐나다","라오스","뉴질랜드","멕시코","스페인","체코공화국","푸에르토리코","태국","덴마크","베트남","칠레","이탈리아","페루","네덜란드","스위스","브라질","영국","이스라엘","에티오피아"]],["3118108518","지에스이피에스(주)","GS EPS CO LTD","smyang@gseps.com","0413512013",15,["미국","호주","페루","독일","중국","러시아연방","핀란드","오스트리아","스웨덴","루마니아","이탈리아","벨기에","포루투갈","스페인","체코공화국","헝가리","인도네시아","튀르키예","인도","폴란드","몰타","파키스탄","일본","영국","스리랑카","멕시코","대만","캄보디아"]],["1258201487","한국가스공사평택기지본부","KOREA GAS CORPORATION","kdpciy@kogas.or.kr","0316803154",15,["호주","말레이시아","카타르","러시아연방","미국","오만","캐나다","인도네시아","페루","트리니다드토바고","나이지리아","적도기니","모잠비크","아랍에미리트연합","싱가포르","중국","일본","네덜란드","벨기에","영국","프랑스"]],["1018664320","파주에너지서비스(주)","PAJU ENERGY SERVICE CO LTD","","0221213146",15,["호주","말레이시아","미국","오만","인도네시아","페루","캐나다","나이지리아","독일","멕시코","스위스","슬로베니아","체코공화국","벨기에","이탈리아","대만","태국","중국","튀르키예"]],["1318205116","한국가스공사인천기지본부","Korea Gas Corporation","sangmun.cho@kogas.or.kr","0328104512",15,["카타르","호주","오만","미국","말레이시아","파푸아뉴기니","인도네시아","모잠비크","러시아연방","페루","나이지리아","아랍에미리트연합","중국","트리니다드토바고","벨기에","네덜란드"]],["1018673756","나래에너지서비스(주)","NARE ENERGY SERVICE CO LTD","","0221213650",15,["호주","말레이시아","미국","오만","인도네시아","독일","캐나다","폴란드","체코공화국","우크라이나","스웨덴","이탈리아","대만","중국"]],["1258623965","신평택발전(주)","SHIN PYEONGTAEK","","0316122901",15,["호주","말레이시아","미국","페루","일본"]],["1318607072","(주)에임하이코리아","AIM HIGH KOREA INC","","0317140881",14,["미국","아랍에미리트연합","중국","콩고","예맨","감비아","바레인","세네갈","트리니다드토바고","가나","요르단","코트디봐르","도미니카","소말리아","사우디아라비아","케냐","도미니카공화국","불령폴리네시아","멕시코","이스라엘","수리남","방글라데시","모리타니","자마이카","핀란드","과테말라","엘살바도르","가이아나","캐나다","말레이시아","큐라소","불령리유니온코모도제도","팔라우","뉴칼레도니아","일본","브라질","모리셔스","홍콩","나이지리아","바누아투","레바논","세인트루시아","온두라스","사모아","파키스탄"]],["7788700797","미원스페셜티케미칼주식회","MIWON SPECIALTY CHEMICAL CO.,LTD","","0314799300",14,["중국","일본","독일","말레이시아","인도네시아","미국","대만","인도","영국","태국","네덜란드","프랑스","스웨덴","남아프리카공화국","벨기에","스페인","호주","체코공화국","스위스","베트남","폴란드","홍콩"]],["4178136985","오일허브코리아여수(주)","OILHUB KOREA YEOSU CO LTD","","0616889120",14,["일본","대만","중국","인도"]],["1148174697","에스와이탱크터미널(주)","SYTANKTERMINALCOLTD","jn4151@naver.com","0234765149",13,["일본","대만","싱가포르"]],["1198102316","기아 주식회사","Kia Corporation","customsjay@kia.com","0234640835",12,["이탈리아","중국","필리핀","독일","미국","체코공화국","네덜란드","멕시코","폴란드","브라질","튀르키예","말레이시아","아일랜드","태국","대만","튀니지","캐나다","스페인","오스트리아","루마니아","콜롬비아","아랍에미리트연합","뉴질랜드","카타르","슬로베니아","에스토니아","일본","베트남","남아프리카공화국","쿠웨이트","슬로바키아","우즈베키스탄","나이지리아","호주","프랑스","싱가포르","푸에르토리코","아이슬란드","영국"]],["6098101877","덴소코리아 (주)","DENSO KOREA CORP","","0552789250",12,["일본","중국","대만","독일","베트남","미국","태국","말레이시아","인도","멕시코","인도네시아","필리핀","슬로바키아","튀르키예","네덜란드","이집트","아일랜드","영국","스페인"]],["1088150292","모트렉스(주)","MOTORLAX LTD","linjichoi@moterx.co.kr","07048926086",11,["중국","말레이시아","아르헨티나","대만","슬로바키아","필리핀","독일","인도","브라질","미국","싱가포르","칠레","우즈베키스탄","베트남","멕시코","프랑스","호주","라오스","아랍에미리트연합","콜롬비아","이스라엘","카자흐스탄","이집트"]],["2838702389","주식회사 에코프로에이치엔","ECOPRO HN CO LTD","","0432407700",9,["영국","중국","인도","대만","싱가포르","말레이시아","미국"]],["1258108085","(주)클린코리아","kleankorea","","0316680211",9,["미국"]],["5578100960","파츠고(주)","PARTSGO","PARTSGO@PARTSGO.CO.KR","82705172876",8,["미국","중국","대만","홍콩","말레이시아","멕시코","일본","영국","필리핀","인도","독일","태국","이스라엘","튀르키예","프랑스","체코공화국","인도네시아","베트남","오스트리아","싱가포르","코스타리카","스위스","아일랜드","불가리아","헝가리","폴란드","이탈리아","모로코","라트비아","튀니지","캐나다","덴마크","슬로바키아","루마니아","캄보디아","그리스","엘살바도르","스페인","핀란드","크로아티아","마세도니아","벨기에","도미니카공화국","뉴질랜드","몰타","스리랑카"]],["2158137525","(주)한라케미칼","HALLA CHEMICAL CO.,LTD.","hallachem@hanmail.com","024241283",8,["중국","인도","영국","일본","미국","헝가리","스페인","말레이시아","대만","태국","벨기에","필리핀"]],["1088115413","(주)신원켐트레이드","SHINWON CHEMTRADECO., LTD.","info@shinwonchem.com","0317860900",8,["중국","인도","일본","싱가포르"]],["1768701248","(주)비즈랩","BIZLAB CO. LTD","","",7,["미국","파나마","태국"]]]};
+const SCALE = DATA.scale;
+const RECS = DATA.records; // [biz,nameKr,nameEn,email,phone,scaleCode,[otherCountries]]
+const SCOLOR = {
+  6:['#6D6E70','#ececec'],7:['#5a6a3a','#eef0e4'],8:['#4a6a4a','#e6f0e8'],
+  9:['#3a6a6a','#e2f0f0'],10:['#3a5a8a','#e4eaf4'],11:['#1A2B5E','#e6e9f2'],
+  12:['#5a3a8a','#ebe4f2'],13:['#8a3a6a','#f2e4ec'],14:['#a83a3a','#f4e4e4'],
+  15:['#D0001B','#fae2e4']
+};
+
+const state={q:'',scales:new Set(),mailOnly:false,sort:'scale',page:1,pageSize:40,results:[]};
+
+/* KPI */
+document.getElementById('k1').innerHTML='<b>'+RECS.length.toLocaleString()+'</b>';
+document.getElementById('k2').innerHTML='<b>'+RECS.filter(r=>r[5]>=12).length.toLocaleString()+'</b>';
+document.getElementById('k3').innerHTML='<b>'+RECS.filter(r=>r[3]).length.toLocaleString()+'</b>';
+document.getElementById('ftUpd').textContent=DATA.updated;
+
+/* scale chips */
+const scaleRow=document.getElementById('scaleRow');
+[15,14,13,12,11,10,9,8,7,6].forEach(code=>{
+  const el=document.createElement('div');
+  el.className='schip';el.textContent=SCALE[code][0];
+  el.onclick=()=>{
+    state.scales.has(code)?(state.scales.delete(code),el.classList.remove('on'))
+      :(state.scales.add(code),el.classList.add('on'));
+    state.page=1;run();
+  };
+  scaleRow.appendChild(el);
+});
+
+/* inputs */
+let qT;
+document.getElementById('q').oninput=e=>{clearTimeout(qT);
+  qT=setTimeout(()=>{state.q=e.target.value.trim().toLowerCase();state.page=1;run();},170);};
+const mailTg=document.getElementById('mailTg');
+mailTg.onclick=()=>{state.mailOnly=!state.mailOnly;
+  mailTg.classList.toggle('on',state.mailOnly);state.page=1;run();};
+document.getElementById('sortSel').onchange=e=>{state.sort=e.target.value;state.page=1;run();};
+document.getElementById('btnReset').onclick=()=>{
+  state.q='';state.scales.clear();state.mailOnly=false;state.sort='scale';state.page=1;
+  document.getElementById('q').value='';
+  document.getElementById('sortSel').value='scale';
+  mailTg.classList.remove('on');
+  document.querySelectorAll('.schip').forEach(e=>e.classList.remove('on'));
+  run();
+};
+
+/* filter */
+function filter(){
+  const q=state.q,sc=state.scales,mail=state.mailOnly,out=[];
+  for(let k=0;k<RECS.length;k++){
+    const r=RECS[k];
+    if(q&&!((r[1]&&r[1].toLowerCase().includes(q))||
+            (r[2]&&r[2].toLowerCase().includes(q))||
+            (r[0]&&r[0].includes(q))))continue;
+    if(sc.size&&!sc.has(r[5]))continue;
+    if(mail&&!r[3])continue;
+    out.push(k);
+  }
+  const s=state.sort;
+  if(s==='scale')out.sort((a,b)=>RECS[b][5]-RECS[a][5]||RECS[b][6].length-RECS[a][6].length);
+  else if(s==='scale-asc')out.sort((a,b)=>RECS[a][5]-RECS[b][5]);
+  else if(s==='name')out.sort((a,b)=>(RECS[a][1]||'').localeCompare(RECS[b][1]||'','ko'));
+  else if(s==='ctry')out.sort((a,b)=>RECS[b][6].length-RECS[a][6].length);
+  return out;
+}
+
+const grid=document.getElementById('grid'),pager=document.getElementById('pager'),
+      resN=document.getElementById('resN');
+function run(){
+  state.results=filter();
+  resN.textContent=state.results.length.toLocaleString();
+  document.getElementById('btnCsv').disabled=state.results.length===0;
+  renderGrid();renderPager();
+}
+function renderGrid(){
+  const total=state.results.length;
+  if(!total){grid.innerHTML='<div class="nodata"><div class="big">검색 결과가 없습니다 · No results</div>'+
+    '<div>조건을 변경하거나 초기화하세요 · Adjust or reset filters.</div></div>';return;}
+  const start=(state.page-1)*state.pageSize;
+  grid.innerHTML=state.results.slice(start,start+state.pageSize).map(k=>{
+    const r=RECS[k],sc=SCALE[r[5]]||SCALE[6],col=SCOLOR[r[5]]||SCOLOR[6];
+    const cts=r[6].slice(0,4).map(c=>`<span class="ct-tag">${c}</span>`).join('');
+    const more=r[6].length>4?`<span class="ct-more">+${r[6].length-4}</span>`:'';
+    const em=r[3]?`<span class="cc-pill em">✉ ${r[3]}</span>`
+      :`<span class="cc-pill no">✉ 이메일 미등록</span>`;
+    const ph=r[4]?`<span class="cc-pill">✆ ${r[4]}</span>`:'';
+    return `<div class="card" data-k="${k}">
+      <div class="card-top">
+        <div><div class="card-nm">${r[1]||'(상호 미상)'}</div>
+          ${r[2]?`<div class="card-en">${r[2]}</div>`:''}</div>
+        <span class="scale-badge" style="color:${col[0]};background:${col[1]}">${sc[1]}</span>
+      </div>
+      <div class="card-ctry">${cts}${more||(cts?'':'—')}</div>
+      <div class="card-contact">${em}${ph}</div>
+      <div class="card-meta">
+        <span class="mi">사업자 · Biz <b>${r[0]||'—'}</b></span>
+        <span class="mi">거래국 · Markets <b>${r[6].length+1}</b></span>
+      </div>
+    </div>`;
+  }).join('');
+  grid.querySelectorAll('.card').forEach(c=>c.onclick=()=>openDetail(+c.dataset.k));
+}
+function renderPager(){
+  const total=state.results.length,pages=Math.ceil(total/state.pageSize);
+  if(pages<=1){pager.innerHTML='';return;}
+  const p=state.page;let html=`<button ${p===1?'disabled':''} data-p="${p-1}">‹</button>`,nums=[];
+  for(let i=1;i<=pages;i++){
+    if(i===1||i===pages||(i>=p-2&&i<=p+2))nums.push(i);
+    else if(nums[nums.length-1]!=='…')nums.push('…');
+  }
+  nums.forEach(n=>html+=n==='…'?'<span class="pinfo">…</span>'
+    :`<button class="${n===p?'on':''}" data-p="${n}">${n}</button>`);
+  html+=`<button ${p===pages?'disabled':''} data-p="${p+1}">›</button>`;
+  html+=`<span class="pinfo">${total.toLocaleString()}개사 중 ${((p-1)*state.pageSize+1).toLocaleString()}–${Math.min(p*state.pageSize,total).toLocaleString()}</span>`;
+  pager.innerHTML=html;
+  pager.querySelectorAll('button[data-p]').forEach(b=>b.onclick=()=>{
+    state.page=+b.dataset.p;renderGrid();renderPager();
+    window.scrollTo({top:document.querySelector('.toolbar').offsetTop-16,behavior:'smooth'});});
+}
+
+/* modal */
+const ov=document.getElementById('ov'),modal=document.getElementById('modal');
+function openDetail(k){
+  const r=RECS[k],sc=SCALE[r[5]]||SCALE[6],col=SCOLOR[r[5]]||SCOLOR[6];
+  const allc=['브루나이',...r[6]];
+  const chips=allc.map((c,i)=>`<span class="ct-chip ${i===0?'vn':''}">${c}</span>`).join('');
+  modal.innerHTML=`
+    <div class="modal-h">
+      <div><h3>${r[1]||'(상호 미상)'}</h3>
+        ${r[2]?`<div class="en">${r[2]}</div>`:''}</div>
+      <button class="x-btn" id="xBtn">×</button>
+    </div>
+    <div class="modal-b">
+      <div class="dgrid">
+        <div class="dfield"><div class="dl">사업자번호 · Business No.</div>
+          <div class="dv">${r[0]||'—'}</div></div>
+        <div class="dfield"><div class="dl">수입 규모 · Import Scale</div>
+          <div class="dv"><span class="scale-badge" style="color:${col[0]};background:${col[1]}">${sc[0]}</span></div></div>
+        <div class="dfield"><div class="dl">이메일 · Email</div>
+          <div class="dv">${r[3]?`<a href="mailto:${r[3]}">${r[3]}</a>`:'<span style="color:#bbb">미등록 N/A</span>'}</div></div>
+        <div class="dfield"><div class="dl">전화 · Phone</div>
+          <div class="dv">${r[4]?`<a href="tel:${r[4]}">${r[4]}</a>`:'<span style="color:#bbb">미등록 N/A</span>'}</div></div>
+      </div>
+      <div class="dsec-t">수입 거래국 · Sourcing Markets (${allc.length})</div>
+      <div class="ct-chips">${chips}</div>
+      <div class="modal-cta">
+        이 업체와의 매칭·소개를 원하시면 KOIMA로 문의하세요. &nbsp;<b>seobh@koima.or.kr</b><br>
+        <span style="color:#999">For an introduction to this buyer, contact KOIMA Buyer Matching Service.</span>
+      </div>
+    </div>`;
+  ov.classList.add('open');
+  document.getElementById('xBtn').onclick=()=>ov.classList.remove('open');
+}
+ov.onclick=e=>{if(e.target===ov)ov.classList.remove('open');};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')ov.classList.remove('open');});
+
+/* CSV */
+document.getElementById('btnCsv').onclick=()=>{
+  if(!state.results.length)return;
+  const head=['업체명(한글)','업체명(영문)','사업자번호','수입규모','이메일','전화번호','수입거래국'];
+  const rows=state.results.map(k=>{
+    const r=RECS[k];
+    return [r[1],r[2],r[0],(SCALE[r[5]]||['',''])[0],r[3],r[4],['브루나이',...r[6]].join(' / ')];
+  });
+  const esc=v=>{v=(v==null?'':String(v));return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;};
+  const csv='\uFEFF'+[head,...rows].map(r=>r.map(esc).join(',')).join('\r\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='KOIMA_브루나이_수입업체_'+new Date().toISOString().slice(0,10).replace(/-/g,'')+'.csv';
+  a.click();URL.revokeObjectURL(a.href);
+};
+
+run();
+</script>
+</body>
+</html>

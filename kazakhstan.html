@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>카자흐스탄 수입업체 디렉토리 · Kazakhstan Importer Directory | KOIMA</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root{
+    --navy:#1A2B5E; --navy-d:#11193b; --red:#D0001B; --gray:#6D6E70;
+    --ink:#1f2430; --paper:#f3f3ef; --card:#fff; --line:#deded6;
+    --line-soft:#e9e9e2; --muted:#80828a; --chip:#eef0f4;
+    --vn:#00AFCA; --vn-d:#0090a8;
+    --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Pretendard',-apple-system,sans-serif;background:var(--paper);
+    color:var(--ink);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  ::selection{background:var(--navy);color:#fff}
+  a{color:var(--navy);text-decoration:none}
+
+  /* ===== HERO ===== */
+  .hero{background:linear-gradient(160deg,#1A2B5E 0%,#11193b 100%);
+    color:#fff;position:relative;overflow:hidden}
+  .hero-top{display:flex;align-items:center;justify-content:space-between;
+    padding:14px 26px;border-bottom:1px solid rgba(255,255,255,.1)}
+  .brand{display:flex;align-items:baseline;gap:10px}
+  .brand .mk{font-size:17px;font-weight:800;letter-spacing:.5px}
+  .brand .mk b{color:#ff5d6e}
+  .brand .sub{font-size:9px;letter-spacing:.2em;color:#aab2d0;text-transform:uppercase}
+  .hero-top .svc{font-size:9px;letter-spacing:.14em;color:#aab2d0;text-transform:uppercase}
+  .hero-body{padding:30px 26px 26px;display:flex;justify-content:space-between;
+    align-items:flex-end;gap:30px;flex-wrap:wrap}
+  .hero-l{max-width:640px}
+  .flagchip{display:inline-flex;align-items:center;gap:8px;
+    background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);
+    padding:5px 12px;border-radius:2px;margin-bottom:14px}
+  .flagchip .fl{width:22px;height:15px;border-radius:2px;display:block;
+    box-shadow:0 0 0 1px rgba(255,255,255,.25)}
+  .flagchip span{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#cdd2e4}
+  .hero h1{font-size:30px;font-weight:800;line-height:1.16;letter-spacing:-.02em}
+  .hero h1 .en{display:block;font-size:17px;font-weight:600;color:#aab2d0;margin-top:6px}
+  .hero p{font-size:13px;color:#c4cadd;margin-top:14px;line-height:1.6}
+  .hero-cta{display:inline-flex;align-items:center;gap:7px;margin-top:16px;
+    background:#fff;color:var(--navy);font-size:12px;font-weight:700;
+    padding:9px 16px;border-radius:2px;letter-spacing:.01em}
+  .hero-cta:hover{background:#ff5d6e;color:#fff;text-decoration:none}
+  #directory{scroll-margin-top:14px}
+  .hero-r{display:flex;gap:10px}
+  .kpi{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+    padding:14px 18px;border-radius:3px;text-align:center;min-width:96px}
+  .kpi .n{font-family:var(--mono);font-size:23px;font-weight:700;line-height:1}
+  .kpi .n b{color:#ff5d6e;font-weight:700}
+  .kpi .l{font-size:9px;color:#aab2d0;margin-top:6px;letter-spacing:.04em;line-height:1.4}
+
+  .wrap{max-width:1300px;margin:0 auto;padding:22px 26px 60px}
+
+  /* ===== CONTROLS ===== */
+  .controls{background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:16px;display:grid;grid-template-columns:1.5fr 1fr;gap:16px}
+  .cgroup .clbl{font-size:10px;font-weight:700;color:var(--gray);
+    letter-spacing:.05em;text-transform:uppercase;margin-bottom:7px;display:block}
+  .clbl .en{color:var(--muted);font-weight:500}
+  .search-in{width:100%;padding:11px 13px;border:1px solid var(--line);
+    border-radius:2px;font-size:14px;font-family:inherit;background:#fcfcfa}
+  .search-in:focus{outline:none;border-color:var(--navy);background:#fff}
+  .scale-row{display:flex;flex-wrap:wrap;gap:5px}
+  .schip{font-size:10px;padding:6px 9px;border:1px solid var(--line);border-radius:2px;
+    cursor:pointer;background:#fcfcfa;font-family:var(--mono);user-select:none;
+    color:var(--gray);white-space:nowrap}
+  .schip:hover{border-color:var(--navy)}
+  .schip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .ctools{display:flex;align-items:center;gap:12px;margin-top:14px;flex-wrap:wrap}
+  .toggle{display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12px;user-select:none}
+  .toggle .sw{width:32px;height:17px;background:var(--line);border-radius:9px;
+    position:relative;transition:.15s;flex-shrink:0}
+  .toggle .sw::after{content:'';position:absolute;top:2px;left:2px;width:13px;height:13px;
+    background:#fff;border-radius:50%;transition:.15s}
+  .toggle.on .sw{background:#1a7a4c}
+  .toggle.on .sw::after{left:17px}
+  .btn-reset{background:none;border:1px solid var(--line);padding:6px 12px;
+    border-radius:2px;font-size:11px;cursor:pointer;color:var(--gray);font-family:inherit}
+  .btn-reset:hover{border-color:var(--red);color:var(--red)}
+
+  /* ===== INTEL SECTIONS ===== */
+  .intel{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .ibox{background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:16px 17px;display:flex;flex-direction:column}
+  .ibox.wide{grid-column:1/-1}
+  .ibox-h{display:flex;align-items:center;gap:8px;margin-bottom:11px}
+  .ibox-h .ic{width:24px;height:24px;border-radius:3px;background:var(--navy);
+    color:#fff;display:flex;align-items:center;justify-content:center;
+    font-size:12px;flex-shrink:0}
+  .ibox-h h3{font-size:12.5px;font-weight:800;color:var(--navy);letter-spacing:-.01em}
+  .ibox-h h3 .en{font-weight:500;color:var(--muted);font-size:10.5px;
+    font-family:var(--mono);display:block;margin-top:1px}
+  .ibox-note{margin-left:auto;font-size:9px;color:var(--muted);
+    background:#f4f4f0;padding:3px 7px;border-radius:2px;letter-spacing:.03em}
+
+  /* trade snapshot */
+  .trade-stats{display:flex;gap:10px;flex-wrap:wrap}
+  .ts-item{flex:1;min-width:88px;background:#f7f7f3;border-radius:3px;
+    padding:10px 11px;border:1px solid var(--line-soft)}
+  .ts-item .tn{font-family:var(--mono);font-size:16px;font-weight:700;color:var(--navy)}
+  .ts-item .tl{font-size:9.5px;color:var(--gray);margin-top:3px;line-height:1.4}
+
+  /* FTA list */
+  .fta-list{display:flex;flex-direction:column;gap:8px}
+  .fta-row{display:flex;align-items:flex-start;gap:9px;padding:9px 10px;
+    background:#f7f7f3;border-radius:3px;border-left:3px solid var(--navy)}
+  .fta-row .fn{flex:1}
+  .fta-row .fn b{font-size:12px;color:var(--ink);font-weight:700}
+  .fta-row .fn .fd{font-size:10.5px;color:var(--gray);margin-top:2px;line-height:1.45}
+  .fta-row .fbadge{font-family:var(--mono);font-size:9px;font-weight:600;
+    padding:3px 7px;border-radius:2px;background:#e4f3ea;color:#1a7a4c;
+    white-space:nowrap;flex-shrink:0}
+  .intel p.lead{font-size:11px;color:var(--gray);line-height:1.55;margin-bottom:11px}
+  .intel p.lead b{color:var(--navy);font-weight:700}
+
+  /* link buttons */
+  .linkrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
+  .linkbtn{display:flex;align-items:center;gap:6px;font-size:10.5px;
+    padding:7px 11px;border:1px solid var(--line);border-radius:2px;
+    background:#fcfcfa;color:var(--navy);font-weight:600}
+  .linkbtn:hover{border-color:var(--navy);text-decoration:none;background:#fff}
+  .linkbtn .ar{font-family:var(--mono);color:var(--muted)}
+
+  /* counterpart */
+  .cp-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .cp-card{background:#f7f7f3;border:1px solid var(--line-soft);border-radius:3px;
+    padding:11px 12px}
+  .cp-card .cprole{font-size:8.5px;font-weight:700;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--red);margin-bottom:4px}
+  .cp-card .cpname{font-size:12px;font-weight:700;color:var(--ink);line-height:1.35}
+  .cp-card .cpinfo{font-size:10px;color:var(--gray);margin-top:5px;line-height:1.6;
+    font-family:var(--mono)}
+  .cp-card .cpinfo a{color:var(--navy)}
+  .ph{color:#b5b5ad;font-style:italic;font-family:'Pretendard'}
+
+  /* joint banner */
+  .joint{grid-column:1/-1;background:linear-gradient(100deg,#1A2B5E,#11193b);
+    color:#fff;border-radius:3px;padding:15px 18px;display:flex;
+    align-items:center;gap:16px;flex-wrap:wrap}
+  .joint .jl{flex:1;min-width:260px}
+  .joint .jt{font-size:13px;font-weight:800}
+  .joint .jd{font-size:10.5px;color:#aab2d0;margin-top:4px;line-height:1.5}
+  .joint .jbadges{display:flex;gap:8px;align-items:center}
+  .joint .jbadge{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);
+    border-radius:3px;padding:8px 13px;font-size:10px;font-weight:700;
+    letter-spacing:.04em;text-align:center;line-height:1.4}
+  .joint .jx{color:#ff5d6e;font-size:14px;font-weight:700}
+
+  /* ===== LIST HEAD ===== */
+  .list-head{margin-top:22px;padding-bottom:2px}
+  .list-head .lh-t{display:flex;align-items:center;gap:10px}
+  .list-head .lh-ic{width:28px;height:28px;background:var(--navy);color:#fff;
+    border-radius:3px;display:flex;align-items:center;justify-content:center;
+    font-size:13px;flex-shrink:0}
+  .list-head h2{font-size:16px;font-weight:800;color:var(--navy);letter-spacing:-.01em}
+  .list-head .lh-en{font-size:11px;color:var(--muted);font-family:var(--mono)}
+
+  /* ===== TOOLBAR ===== */
+  .toolbar{display:flex;align-items:center;gap:14px;margin:18px 0 10px;flex-wrap:wrap}
+  .rescount{font-size:13px;color:var(--gray)}
+  .rescount b{font-family:var(--mono);font-size:19px;color:var(--navy);font-weight:700}
+  .tb-r{margin-left:auto;display:flex;gap:9px}
+  .sortsel{padding:8px 11px;border:1px solid var(--line);border-radius:2px;
+    font-size:12px;font-family:inherit;background:#fff;cursor:pointer}
+  .btn-csv{background:var(--navy);color:#fff;border:none;padding:9px 15px;
+    border-radius:2px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+  .btn-csv:hover{background:var(--navy-d)}
+  .btn-csv:disabled{background:var(--line);cursor:not-allowed}
+
+  /* ===== CARDS ===== */
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:15px 16px;cursor:pointer;transition:border-color .12s,box-shadow .12s;
+    display:flex;flex-direction:column;gap:10px}
+  .card:hover{border-color:var(--navy);box-shadow:0 3px 14px rgba(17,25,59,.09)}
+  .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+  .card-nm{font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.3}
+  .card-en{font-size:10.5px;color:var(--muted);font-family:var(--mono);margin-top:2px}
+  .scale-badge{display:inline-block;font-family:var(--mono);font-size:9.5px;font-weight:600;
+    padding:4px 7px;border-radius:2px;white-space:nowrap;flex-shrink:0}
+  .card-meta{display:flex;gap:14px;font-size:11px;color:var(--gray);
+    border-top:1px solid var(--line-soft);padding-top:9px}
+  .card-meta .mi b{font-family:var(--mono);color:var(--navy);font-weight:700}
+  .card-ctry{font-size:11px;color:var(--gray);line-height:1.5}
+  .card-ctry .ct-tag{display:inline-block;background:var(--chip);border-radius:2px;
+    padding:1px 6px;margin:0 3px 3px 0;font-size:10.5px}
+  .card-ctry .ct-more{font-family:var(--mono);font-size:10px;color:var(--navy)}
+  .card-contact{display:flex;gap:7px;flex-wrap:wrap}
+  .cc-pill{font-size:10.5px;padding:3px 8px;border-radius:2px;border:1px solid var(--line-soft)}
+  .cc-pill.em{background:#eef1f8;color:var(--navy)}
+  .cc-pill.no{background:#f6f6f3;color:var(--line);border-color:var(--line-soft)}
+
+  .nodata{grid-column:1/-1;padding:60px 20px;text-align:center;color:var(--muted)}
+  .nodata .big{font-size:15px;font-weight:600;color:var(--gray);margin-bottom:6px}
+
+  /* ===== PAGER ===== */
+  .pager{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:22px;flex-wrap:wrap}
+  .pager button{min-width:34px;height:34px;border:1px solid var(--line);background:#fff;
+    border-radius:2px;cursor:pointer;font-family:var(--mono);font-size:12px;color:var(--gray)}
+  .pager button:hover:not(:disabled){border-color:var(--navy);color:var(--navy)}
+  .pager button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .pager button:disabled{opacity:.4;cursor:default}
+  .pager .pinfo{font-size:11px;color:var(--muted);margin:0 8px}
+
+  /* ===== MODAL ===== */
+  .ov{position:fixed;inset:0;background:rgba(17,25,59,.55);z-index:100;
+    display:none;align-items:center;justify-content:center;padding:24px}
+  .ov.open{display:flex}
+  .modal{background:#fff;border-radius:4px;max-width:620px;width:100%;
+    max-height:86vh;overflow-y:auto;border-top:3px solid var(--vn)}
+  .modal-h{padding:20px 24px 16px;border-bottom:1px solid var(--line-soft);
+    display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+  .modal-h h3{font-size:18px;font-weight:800;color:var(--navy);line-height:1.3}
+  .modal-h .en{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:4px}
+  .x-btn{background:none;border:1px solid var(--line);width:30px;height:30px;
+    border-radius:2px;cursor:pointer;font-size:16px;color:var(--gray);flex-shrink:0}
+  .x-btn:hover{border-color:var(--red);color:var(--red)}
+  .modal-b{padding:20px 24px 24px}
+  .dgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px 20px;margin-bottom:20px}
+  .dfield .dl{font-size:9.5px;font-weight:700;color:var(--gray);letter-spacing:.05em;
+    text-transform:uppercase;margin-bottom:4px}
+  .dfield .dv{font-size:13.5px;font-family:var(--mono)}
+  .dsec-t{font-size:10.5px;font-weight:700;color:var(--navy);letter-spacing:.05em;
+    text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .dsec-t::after{content:'';flex:1;height:1px;background:var(--line-soft)}
+  .ct-chips{display:flex;flex-wrap:wrap;gap:5px}
+  .ct-chip{font-size:11.5px;padding:4px 9px;background:var(--chip);border-radius:2px;
+    border:1px solid var(--line-soft)}
+  .ct-chip.vn{background:var(--vn);color:#fff;border-color:var(--vn);font-weight:600}
+  .modal-cta{margin-top:20px;background:#f5f5f1;border-left:3px solid var(--navy);
+    padding:13px 15px;font-size:12px;color:var(--gray);line-height:1.55}
+  .modal-cta b{color:var(--navy)}
+
+  footer{text-align:center;padding:28px 20px 8px;font-size:11px;color:var(--muted);line-height:1.7}
+  footer .mono{font-family:var(--mono)}
+
+  @media(max-width:880px){
+    .controls{grid-template-columns:1fr}
+    .grid{grid-template-columns:1fr}
+    .hero-body{flex-direction:column;align-items:flex-start}
+    .dgrid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-top">
+    <div class="brand">
+      <span class="mk">KOIMA<b>.</b></span>
+      <span class="sub">Korea Importers Association</span>
+    </div>
+    <span class="svc">Country Directory · 국가별 수입업체</span>
+  </div>
+  <div class="hero-body">
+    <div class="hero-l">
+      <div class="flagchip"><img class="fl" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBpZD0iZmxhZy1pY29ucy1reiIgdmlld0JveD0iMCAwIDY0MCA0ODAiPgogIDxwYXRoIGZpbGw9IiMwMGFiYzIiIGQ9Ik0wIDBoNjQwdjQ4MEgweiIvPgogIDxnIGZpbGw9IiNmZmVjMmQiPgogICAgPGcgdHJhbnNmb3JtPSJtYXRyaXgoLjQ4IDAgMCAuNDggMzQ1LjggMjAxLjYpIj4KICAgICAgPGNpcmNsZSByPSIxMzQuNiIvPgogICAgICA8ZyBpZD0ia3otYyI+CiAgICAgICAgPGcgaWQ9Imt6LWIiPgogICAgICAgICAgPHBhdGggaWQ9Imt6LWEiIGQ9Ik0wLTE1Mi45YzgtLjEgMTEtNS4xIDExLTExLjEgMC04LTExLTQ2LjEtMTEtNDYuMVMtMTEtMTcyLTExLTE2NGMwIDYgMyAxMS4xIDExIDExLjEiLz4KICAgICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI2t6LWEiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHRyYW5zZm9ybT0icm90YXRlKDkwKSIvPgogICAgICAgICAgPHVzZSB4bGluazpocmVmPSIja3otYSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdHJhbnNmb3JtPSJzY2FsZSgtMSkiLz4KICAgICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI2t6LWEiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHRyYW5zZm9ybT0icm90YXRlKC05MCkiLz4KICAgICAgICA8L2c+CiAgICAgICAgPHVzZSB4bGluazpocmVmPSIja3otYiIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdHJhbnNmb3JtPSJyb3RhdGUoMjIuNSkiLz4KICAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNrei1iIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB0cmFuc2Zvcm09InJvdGF0ZSg0NSkiLz4KICAgICAgICA8dXNlIHhsaW5rOmhyZWY9IiNrei1iIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB0cmFuc2Zvcm09InJvdGF0ZSg2Ny41KSIvPgogICAgICA8L2c+CiAgICAgIDx1c2UgeGxpbms6aHJlZj0iI2t6LWMiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHRyYW5zZm9ybT0icm90YXRlKDExLjMpIi8+CiAgICA8L2c+CiAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTcyLjgpc2NhbGUoLjQ4KSI+CiAgICAgIDxwYXRoIGQ9Ik0xMDc1LjggNjU1Yy0zLjUgNi4zLTUuNiAxMy42LTEwIDE5LjMtMTMuNi0xMi4zLTMzLjItMTItNTAuNC0xMi43LTE0LjItLjgtMjkuNi0yLjEtNDAuNi0xMi4yLTExLjUtOS41LTIxLTIxLjctMzMuOC0yOS40YTgzIDgzIDAgMCAxLTMzLjEtMTUuM2MtMjAuMi0xNi41LTMxLjgtNDEtNTEuNi01OC0zLjctMy42LTguMi02LjUtMTIuNC05LjYtNCAxLTIuMiA5LjYtNy4xIDUuMi0yLjctMi05LjQtMi4xLTEwIC42IDYgOCAxMi4xIDE3IDEzIDI3LjItNC4yLjQtMTEuNS0uOS0xMy41LjZhODQgODQgMCAwIDAgMjAuNCAyMS4zYy0zLjguNi0xMS4zLjMtMTIuOCAxLjhhNTkgNTkgMCAwIDAgMjYuOCAxNC43YzIgMi44LTMuMSA4LjIgMS4zIDEwLjYgMi41IDEgMTAuOSAyLjggNS4xIDUuNy00IDIuNi0yLjUgOC45IDIuNiA4LjcgMy4yIDEuNyAxMC40IDIgMTEgNS0yLjkgMi44LTExLjcgNi4yLTQuMiA5YTUyIDUyIDAgMCAwIDIzLjEgNi43Yy00IDMuNC05IDUuMy0xMy4xIDguNSAxOC41IDEwLjkgMzkgMTggNTkuNCAyNSA4IDIuNiAxNi4zIDUuMSAyNC43IDYuNy0yNC40LTEuNC00OC04LjYtNzAuMi0xOC41cS0xNy4yLTcuNi0zNC44LTE0LjJjNS4xLTIuNyAxMS4xLTMuNCAxNi41LTUuNy0xMS4yLTIuMi0yMy4zLTMtMzMtOSAxLjQtMi44IDctMi45IDEwLjItNC4zIDYtMS40IDkuNi0zIDEuMy0zLjYtOC40LTIuMy0xOC0xLjMtMjUuNS02LjMuNS0zIDguMy0yIDExLjQtMy4zIDQtLjcgOC40LTEuMyAxMS42LTQtMTMtNS4zLTMwLTEuNS00MC4yLTEzLTIuMy00LjQgNy4zLS45IDEwLTEuNiA3IDAgMTQuNSAyLjIgMjEuMi0uNi0xOS04LjMtMzkuMy0xNi01My43LTMxLjQtMS42LTIuNS02LjQtOS4zLTIuNS0xMC4xIDExLjIgMS41IDE5LjMgMTMuNyAzMS40IDExLjggMS42LTIuMS03LTUuNi05LjItOC43YTIyOSAyMjkgMCAwIDEtNDYuOC01MWMtLjgtNi43IDkuNS03LjcgMTIuMi0yLjYgMTMuNCAxMyAyNS41IDI4IDQyLjIgMzYuOCA2IDIuOS0zLjQtMy40LTQuNi01LjdhMjk5IDI5OSAwIDAgMS00MC45LTU3LjljLTItMy44LTUuMS0xMC43LjctMTIuNyA1LjctMi45IDExLjUgMSAxNC40IDYgMTEuMyAxNC4zIDE5LjcgMzEuMyAzMy44IDQzLjItMTItMjMuMy0yNC45LTQ4LTI1LjItNzQuOC4zLTUuMi42LTEzIDcuNy0xMi45IDYtLjkgNSA2LjcgNyAxMC4zIDUuOCAxOS44IDguMyA0MS4yIDIwIDU4LjYtMi41LTE0LjYtNi40LTI5LjctMy44LTQ0LjYuNi01IDYtNi40IDkuNy0zLjQgMi45IDcgMy41IDE1LjkgNi4xIDIzLjVhMjM3IDIzNyAwIDAgMCA5MyAxMjcuMiAyNDUgMjQ1IDAgMCAwIDEyMy4zIDQyLjNxNiAuNSAxMS45LjdtMTM2LjQgOTEuMWMtNy4yIDQuNC0xMi44LTMuNC0xOC44LTUuNy00LjQgMi40LTQuOCAxMC4yLTguOCAxNC00LjggNS41LTEwLjgtMS42LTEwLjMtNy01LjggNC45LTguNyAxNi0xOCAxNC40LTQuNS0zLjYtNy44LTExLjItMTEuMi0yLjUtMi43IDQuMi0xMCAxMC4yLTEzLjkgMy44LTEuMi01LjYtNC0xMi4yLTctMy4zLTIuMiA2LjQtOSAxMS0xNS40IDguMi0zLjYtMi45IDIuOC0xMy43LTEuNy0xMy02LjggNC42LTEwLjggMTUuNy0yMC4zIDE0LjgtMy43LTQgMi4zLTExLjEtMS44LTE1LjctNC43IDYuMS0xMCAxNS4xLTE4LjMgMTUuNy00LTMuMi4yLTEyLjUtMi40LTEzLjgtOC40IDUtMTcuNCAxNC4xLTI4IDExLjMgNC4xLTE2IDIxLjUtMjEuNSAzNi0yMi43IDI1LjEtMy4xIDUxLjUgMi42IDc1LjctNi41IDMuOS0yLjQgMTMuMy01LjcgMTAtMTEuMi0zLTQuNCA3LjctMi43IDguNy03LjgtLjYtNi40IDUtNS41IDEwLjQtNiAyNC40LTEuMSA0OC41IDQgNzIuOCA0LjkgMS44IDExLjgtMTEuMyAyMC4xLTIyIDE2LjUtNSAuOC0xMi41LTExLjYtMTEtMi42LTEgNC44LS40IDExLTQuNyAxNC4ybS0yMDcuNC0yNC4yYzUuNiA1LjEgOS42LTEgMTQuOS0zLjNhMTk3IDE5NyAwIDAgMCA0OC4zLTI3LjNjOS4yLTcuNiAxNy4yLTE3LjUgMjkuNi0yMCAyNC4yLTcuMyA0OS45LTYuNCA3NC4xLTEzLjIgMTguNS0yNS4yIDQ5LjgtMzQuMyA3Ni4xLTQ4LjggNS45LTEuOCA4LjItNi43IDEwLTEyIDEwLTE1LjkgMjMuNy0yOS45IDM5LjktMzkuNWEzNyAzNyAwIDAgMSAyNS40LTQuNiA0MiA0MiAwIDAgMS0xMy43IDI2LjVjNS45LS4xIDExLTMuOCAxNi44LTMuNiAyIDEwLjYtOS40IDE2LjEtMTUuNSAyMi43IDMuNC44IDE2LjQgMS44IDkuMyA1LjItOSA2LjItMTkuMyAxMC41LTI3LjYgMTcuOCA3LjcgMS40IDguNiAzIC44IDUuOC00LjMgMi44LTEyLjQgMy44LTEzLjIgOS40IDUuOCAzLjYtMi42IDctNS45IDguMi02LjIgMS41LTEyLjggNC4yLTQuNSA5LTMuMSA0LjctOS45IDUuNy0xNS40IDUuMiAxLjcgNS40IDQuMSAxMS40LTIuOCAxMy44YTEwOCAxMDggMCAwIDEtNTMuNiAyMi40YzI0LjUgMS44IDQ5LjgtMi43IDcwLjctMTYgMi44LTMuMyAxNy4zLTYuOSA5LjItOS42LTMuOC0xLjYtMTItMy40LTEyLjYtNi4zIDExLjQtNyAyNS43LTQuNSAzNy45LTguNi4zLTQtOS4zLTIuOS0xMi45LTMuOC04LjUtLjctOC0yLjkuMi0zLjcgMTAuNC0yLjggMjIuMi0zLjMgMzEtMTAtNy4xLTMuNC0xNi4xLS41LTIzLjctMy4yIDEyLjktNS42IDI4LjEtNi4yIDM5LjctMTQuNyA1LjMtNS45LTYuOC00LTEwLjMtMy45LTcuMSAxLjMtMTAuNC0yLjItMi4zLTUuMSAxMy45LTEwLjMgMzEuNC0xNi45IDQxLjItMzEuNyAyLjMtMy4zIDUuNC0xMy4zLTItOS44LTkuNiAzLjMtMTguMSAxNC4xLTI5LjIgMTAuOCAyMS44LTE2LjkgNDIuNC0zNiA1Ny4zLTU5LjMuOC02LjgtOS44LTcuNS0xMi41LTIuMi0xNCAxMy40LTI2LjYgMjkuMy00NC41IDM3LjhhMjgxIDI4MSAwIDAgMCA0My42LTU2LjRjMi43LTYgOS44LTEzLjMgNi0yMC02LjMtNS4yLTE0LjEtLjQtMTcuMyA1LjctMTAuOSAxNC4yLTE5LjEgMzAuNy0zMyA0Mi4zIDEyLjEtMjMuMyAyNC44LTQ4LjIgMjUtNzUgMC01LjYtMS0xMy44LTguNi0xMi43LTYgMS00LjUgMTAtNyAxNC41LTUuNCAxOC40LTggMzguMy0xOSA1NC4zIDIuNS0xNC45IDYuOC0zMC41IDMuNS00NS41LTEuNi02LjgtMTIuNS0zLjktMTEgMi44LTEzIDY1LjktNTcuMyAxMjMuNS0xMTUgMTU2LjgtMjYuNSAxNS01NiAyNC42LTg2LjIgMjktOCAxLjctMTYuOC43LTI0LjUgMy41LTE4LjggMTQuMy0zMC4xIDM4LjQtNTMuOCA0NS45LTEwLjcgNS4zLTI0LjUgNi40LTMyLjEgMTYuMmE5IDkgMCAwIDAtLjggNC4ybTUxLjctMTAuM3EtNS40LjItMTAuNiAxLjdjLTQuNy43LTkuMiAyLjMtMTMuOCAzbC0xLjkuNC0zLjEuM2ExMSAxMSAwIDAgMSAwIDUuMSA2IDYgMCAwIDEtMS40IDJxLS45IDEuMi0yLjIgMS44YTcgNyAwIDAgMS0yLjYuN3EtMS4zLjEtMi43LS40LTEuMy0uNC0yLjUtMS41bC0yLjguNWgtMi42bC0yLjgtMS0yLjYtMS4zYy0zLjQgMi03LjIgMy45LTkuMyA3LjRhMTEgMTEgMCAwIDAtMS42IDUuM3EtLjIgMy42IDEuNCA3Yy40LjYuNy0yLjMgMS44LTIuN3EzLTIuNCA2LjctMy4zYzItMSAxLjcgMCAuOSAxLjYtLjIuOS0xLjMgNCAuMiAyLjRhNjUgNjUgMCAwIDEgMjEuNi00LjFxMTUuOS0xLjUgMzEuOC0xLjVsMzAgLjZjNC44LjIgOS42IDEuMiAxNC4zLjQgMS4xLS4zIDIuOS0uMyAzLjYtMS0yLjItMS4yLTQuNy0xLjMtNy0xLjZoLTE5LjFjLTUuMy0uNS0xMC44LS42LTE1LjgtMi42LTEuNC0uNS0yLjYtMS44LTMuOS0uNGEyNCAyNCAwIDAgMS01LjkgMS4zcS01LjMuMi0xMC4yLTEuOCAzLjYtNC43IDcuNy05bC02LjItMS4zeiIvPgogICAgICA8Y2lyY2xlIGN4PSIxMDIwIiBjeT0iNzIwLjkiIHI9IjIuNCIvPgogICAgICA8Y2lyY2xlIGN4PSIxMDE5LjgiIGN5PSI3MjAuNSIgcj0iMSIgc3Ryb2tlPSIjZmZlYzJkIiBzdHJva2Utd2lkdGg9Ii40Ii8+CiAgICA8L2c+CiAgICA8ZyB0cmFuc2Zvcm09InNjYWxlKC40OCkiPgogICAgICA8ZyBpZD0ia3otZiI+CiAgICAgICAgPGcgaWQ9Imt6LWUiPgogICAgICAgICAgPHBhdGggZD0iTTEyMCA3M3MtOS42LTguMi0xMi45LTQuMWMtNS4yIDYuNSAxNi4yIDM5IDE2LjIgNTAuNCAwIDE4LjgtMTIuNiAyMy45LTI4IDI2LjUtMTAuNCAxLjgtMjcuMy0uNy0yNy4zLS43IDMuMi00LjMgNS4zLTUuNiAxMC42LTUuOS02LTMtMTItOS44LTEyLTIwLjMgMC0xNi4xIDYuNi0yMi44IDYuNi00MUM3My4yIDY4IDY1IDU1IDY1IDU1YzE0LjYgMS41IDIxLjggMTUgMTcuNyAyNS44YTcgNyAwIDAgMCA2LjMtMS45YzEgMy0uNiA2LjUtMi45IDkuNSAxLjggMSAzLjIuNCA2LS4yLS4yIDMtMiA2LjQtNi42IDkuNSAxMy4yLTMuNCAyMS4yIDUuNyAyMS4yIDE1LjMgMCA3LjMtNSAxMi41LTEwIDEyLjUtMS42IDAtNC0uNy01LjMtMS43LTEgMi0uNCA0LjcuNSA2LjctMy42LTEtNi0zLjItNC4zLTcuN3EtNC4yLS4zLTYuNS0zIDIuMy0zIDYuNS0zYy0yLTQuMi4zLTYuNSAzLjYtOC40IDAgMC0yLjEgOC40IDMuMiA4LjQgMi40IDAgNC42LS43IDQuNi00LjMgMC0zLjEtMi43LTcuNC05LTcuMXMtMTEuMyA0LjMtMTEuMyAxNC4zYzAgOS4yIDcuNSAxMy44IDE3LjMgMTQgOC44LjQgMTUuNS00LjQgMTUuNS0xMy41QzExMS41IDEwOCA5NCA4MC40IDk0IDY5LjZjMC04LjEgNy4yLTEyLjcgMTQuNC0xMi43IDkuMiAwIDE3IDkuMiAxNyA5LjJsLTUuNCA2Ljh6Ii8+CiAgICAgICAgICA8cGF0aCBpZD0ia3otZCIgZD0iTTEyMiAyOTIuMWMwIDIwLjMtMTguMiAzMC43LTMyLjUgMzAuNy0xOS4yIDAtMjkuNS0xMS41LTI5LjUtMjYuNiAwLTguNSAxLjYtMTMuOSA1LjUtMjJsNDQuMi05MS43YTI3IDI3IDAgMCAwIDItMTIuMmMwLTguMi04LTE0LjktMTYuMy0xNS03LjYtLjMtMTYgNy0xNiAxNS4zIDAgMTAuMSA1LjMgMTQuNiAxMC43IDE0LjYgNi42IDAgOS4yLTIuNyA5LjItNy40cS0uMi00LjctMy44LTQuNmMtNS43IDAtNCA3LjYtNCA3LjZhNS4yIDUuMiAwIDAgMS0zLjktNyAxMCAxMCAwIDAgMS01LjUtMy4zcTIuMi0yLjMgNS41LTNjLTEuMy00LjQuNS02LjUgNC4zLTcuNWE4IDggMCAwIDAtLjUgNC44YzYtMS44IDE1LjMgMSAxNS4zIDExLjRzLTcuMiAxOS4xLTIwLjcgMTdjMy4yIDEuNSA0LjggNC42IDUuMiA4LjEtMi41LTEtNS4yLTEtNS4yLTEgMS42IDIuNyAzLjggNSAzLjcgMTAuNi0yLjUtMS4yLTQuOS0zLjMtOC0yIDUgMTAtMS4yIDIzLjYtMTcgMjYuOHE4LjYtMTAuMyA4LjYtMjEuM2MwLTIzLjUtNi41LTI3LjQtNi41LTQzLjhhMjQgMjQgMCAwIDEgMTAuNS0xOS4ydi4zQTE0IDE0IDAgMCAxIDY4IDE0NWE2MiA2MiAwIDAgMSAzNCAuMyAyNSAyNSAwIDAgMSAxOCAxMiAzNiAzNiAwIDAgMSAwIDI4LjljLTYuMyAxMy0zNS43IDc1LjYtNDQuOSA5NS4ycS0zIDYuMy0zLjEgMTMuNGMwIDEyIDExIDE2LjIgMTcuMiAxNi4yIDcuNSAwIDE1LjItNS43IDE1LjItMTIuOCAwLTQuNS0yLjUtNy4zLTYtNy4zLTguNSAwLTggNy4yLTYuMyAxMS44LTUuMy0yLjQtOC4zLTYuNi03LjUtMTFhMTQgMTQgMCAwIDEtOC40LTQuOGMyLTIuNiA0LjYtNC42IDguNC00LjctMS43LTYuOSAzLTkuOCA3LjUtMTEuNC0xLjQgNS0yLjQgMTAuOSA2LjMgMTAuOSA2LjMgMCAxMS4yIDEgMTQuMSA1LjJsLjctMjdjLjQtOC4xLTEwLjgtOC0xOC01LjUgMi43LTkuMyA4LjItMTQuNCAyMS0xMy4xYTEwIDEwIDAgMCAxLTYuNC05LjhjMC03LjYgNi4yLTE2IDEwLjItMTguNWwyIDc5eiIvPgogICAgICAgICAgPHVzZSB4bGluazpocmVmPSIja3otZCIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdHJhbnNmb3JtPSJtYXRyaXgoMSAwIDAgLTEgMCA2NDUpIi8+CiAgICAgICAgPC9nPgogICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI2t6LWUiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHRyYW5zZm9ybT0ibWF0cml4KC0xIDAgMCAxIDI0MCAwKSIvPgogICAgICA8L2c+CiAgICAgIDx1c2UgeGxpbms6aHJlZj0iI2t6LWYiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHRyYW5zZm9ybT0ibWF0cml4KDEgMCAwIC0xIDAgMTAwMCkiLz4KICAgIDwvZz4KICA8L2c+Cjwvc3ZnPgo=" alt="KZ" width="22" height="15"><span>Kazakhstan · 카자흐스탄</span></div>
+      <h1>카자흐스탄 거래 한국 수입업체 디렉토리
+        <span class="en">Korean Importers Sourcing from Kazakhstan</span></h1>
+      <p>카자흐스탄산 제품을 수입 중인 한국 기업을 규모·연락처와 함께 확인하실 수 있습니다.
+        해외 공급기업과 무역진흥기관을 위한 KOIMA 바이어 매칭 자료입니다.<br>
+        <span style="color:#8b93b4">Verified Korean buyers actively importing from Kazakhstan &mdash;
+        prepared by KOIMA for overseas suppliers and trade-promotion partners.</span></p>
+      <a href="#directory" class="hero-cta">수입업체 목록 바로가기 · Browse Importers ↓</a>
+    </div>
+    <div class="hero-r">
+      <div class="kpi"><div class="n" id="k1">—</div>
+        <div class="l">거래 수입업체<br>Importers</div></div>
+      <div class="kpi"><div class="n" id="k2">—</div>
+        <div class="l">중대형 바이어<br>USD 10M+</div></div>
+      <div class="kpi"><div class="n" id="k3">—</div>
+        <div class="l">이메일 보유<br>Contactable</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="controls">
+    <div class="cgroup">
+      <span class="clbl">업체명 · 사업자번호 검색 <span class="en">/ Search by name or business no.</span></span>
+      <input type="text" class="search-in" id="q" placeholder="한글·영문 업체명 또는 사업자번호 입력">
+      <div class="ctools">
+        <div class="toggle" id="mailTg"><div class="sw"></div>
+          <span>이메일 보유 업체만 · Email only</span></div>
+        <button class="btn-reset" id="btnReset">↺ 초기화 Reset</button>
+      </div>
+    </div>
+    <div class="cgroup">
+      <span class="clbl">수입 규모대 <span class="en">/ Annual import scale</span></span>
+      <div class="scale-row" id="scaleRow"></div>
+    </div>
+  </div>
+
+  <!-- ===== COUNTRY INTELLIGENCE ===== -->
+  <div class="intel">
+
+    <!-- 교역 스냅샷 -->
+    <div class="ibox">
+      <div class="ibox-h">
+        <span class="ic">◴</span>
+        <h3>한-카자흐스탄 교역 스냅샷
+          <span class="en">Korea–Kazakhstan Trade Snapshot</span></h3>
+      </div>
+      <div class="trade-stats">
+        <div class="ts-item"><div class="tn">90</div>
+          <div class="tl">카자흐스탄 거래 한국 수입업체<br>Korean importers</div></div>
+        <div class="ts-item"><div class="tn">43</div>
+          <div class="tl">중대형 바이어 (USD 10M+)<br>Mid–large buyers</div></div>
+        <div class="ts-item"><div class="tn">48%</div>
+          <div class="tl">중대형 바이어 비중<br>share of large buyers</div></div>
+      </div>
+      <p class="lead" style="margin:11px 0 0">카자흐스탄 거래 한국 수입업체는 수는 적지만
+        <b>절반가량이 1,000만 달러 이상 중대형 바이어</b>로, 자원·원자재 중심의
+        대형 거래가 두드러지는 시장입니다. 정밀한 1:1 바이어 매칭에 적합합니다.<br>
+        <span style="color:#b5b5ad">* 거래업체 수·비중은 본 데이터베이스 기준</span></p>
+    </div>
+
+    <!-- 통상 협력 현황 -->
+    <div class="ibox">
+      <div class="ibox-h">
+        <span class="ic">§</span>
+        <h3>통상 협력 현황 · 협정 구조
+          <span class="en">Trade Framework &amp; Agreements</span></h3>
+        <span class="ibox-note">정보 안내용 · 관세는 공식 포털 확인</span>
+      </div>
+      <p class="lead">한-카자흐스탄 간에는 <b>자유무역협정(FTA)이 체결되어 있지 않으며</b>,
+        카자흐스탄은 관세동맹인 유라시아경제연합(EAEU)에 속해 협정 권한을 EAEU가
+        보유합니다. 다만 양자 투자·조세 협정이 기반을 이루고 있습니다.</p>
+      <div class="fta-list">
+        <div class="fta-row" style="border-left-color:#c79a3a">
+          <div class="fn"><b>한-EAEU FTA</b>
+            <div class="fd">유라시아경제연합 차원의 협정 · 회원국 만장일치 필요 · 미체결</div></div>
+          <span class="fbadge" style="background:#f4ece0;color:#9a7a2a">미체결</span>
+        </div>
+        <div class="fta-row">
+          <div class="fn"><b>한-카자흐스탄 투자보장협정 (BIT)</b>
+            <div class="fd">양국 간 투자 보호·증진 협정 · 발효 중</div></div>
+          <span class="fbadge">발효 중</span>
+        </div>
+        <div class="fta-row">
+          <div class="fn"><b>이중과세방지협약</b>
+            <div class="fd">양국 간 조세 협약 · 거래·투자 시 과세 기준 제공</div></div>
+          <span class="fbadge">발효 중</span>
+        </div>
+      </div>
+      <p class="lead" style="margin:11px 0 0;color:#b5b5ad">※ 협정 발효 상태는 변동될 수 있으므로
+        관세청·외교부 공식 정보로 확인하시기 바랍니다.</p>
+    </div>
+
+    <!-- 관세·통관 확인 (공식 포털 링크) -->
+    <div class="ibox wide">
+      <div class="ibox-h">
+        <span class="ic">⎙</span>
+        <h3>관세율 · 통관 · 수입요건 확인
+          <span class="en">Tariff &amp; Customs — Official Lookup</span></h3>
+        <span class="ibox-note">실시간 정보는 아래 공식 포털에서 조회</span>
+      </div>
+      <p class="lead">한-카자흐스탄 교역에는 FTA 특혜관세가 적용되지 않아 일반 관세율이
+        적용됩니다. 카자흐스탄은 EAEU 공동 대외관세를 운용하므로, 품목별 관세·통관·
+        수입요건은 아래 <b>공식 기관 정보</b>로 확인하시기 바랍니다.</p>
+      <div class="linkrow">
+        <a class="linkbtn" href="https://www.customs.go.kr/" target="_blank" rel="noopener">
+          관세청 · 관세법령정보 <span class="ar">↗</span></a>
+        <a class="linkbtn" href="https://unipass.customs.go.kr/" target="_blank" rel="noopener">
+          관세청 UNI-PASS · 통관 <span class="ar">↗</span></a>
+        <a class="linkbtn" href="https://www.kotra.or.kr/almaty" target="_blank" rel="noopener">
+          KOTRA · 알마티 무역관 <span class="ar">↗</span></a>
+        <a class="linkbtn" href="https://news.kotra.or.kr/" target="_blank" rel="noopener">
+          KOTRA · 카자흐스탄 시장정보 <span class="ar">↗</span></a>
+      </div>
+    </div>
+
+    <!-- 카운터파트 기관 -->
+    <div class="ibox wide">
+      <div class="ibox-h">
+        <span class="ic">⚐</span>
+        <h3>카운터파트 · 협력 기관
+          <span class="en">Counterpart Institutions &amp; Contacts</span></h3>
+        <span class="ibox-note">대사관 정보는 확인 후 갱신 예정</span>
+      </div>
+      <div class="cp-grid">
+        <div class="cp-card">
+          <div class="cprole">주한 대사관 · Embassy in Korea</div>
+          <div class="cpname">주한 카자흐스탄 대사관<br>Embassy of Kazakhstan in Korea</div>
+          <div class="cpinfo">서울 소재<br>
+            <span class="ph">[ 주소·전화·이메일 — 대사관 확인 후 입력 ]</span></div>
+        </div>
+        <div class="cp-card">
+          <div class="cprole">무역진흥기관 · Trade Promotion</div>
+          <div class="cpname">QazTrade<br>Kazakhstan Trade Promotion</div>
+          <div class="cpinfo">카자흐스탄 무역·통합부 산하 수출진흥기관<br>
+            <span class="ph">[ 협력 협의 후 연락처 입력 ]</span></div>
+        </div>
+        <div class="cp-card">
+          <div class="cprole">KOTRA 무역관 · Almaty</div>
+          <div class="cpname">KOTRA 알마티 무역관</div>
+          <div class="cpinfo">카자흐스탄 알마티 소재<br>
+            <a href="https://www.kotra.or.kr/almaty" target="_blank" rel="noopener">kotra.or.kr/almaty ↗</a></div>
+        </div>
+        <div class="cp-card">
+          <div class="cprole">재외공관 · Korean Mission</div>
+          <div class="cpname">주카자흐스탄 대한민국 대사관 / 주알마티 총영사관</div>
+          <div class="cpinfo">아스타나 · 알마티<br>
+            <span class="ph">현지 수출입 애로 상담 채널</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 공동 운영 배너 -->
+    <div class="joint">
+      <div class="jl">
+        <div class="jt">대사관 공동 운영 디렉토리 · Jointly Operated Directory</div>
+        <div class="jd">본 국가별 디렉토리는 KOIMA와 주한 카자흐스탄 대사관의 공동 협력으로
+          운영될 수 있습니다. 대사관은 자국 수출기업에 공식 채널을 제공하고,
+          KOIMA는 검증된 한국 바이어 네트워크를 연결합니다.</div>
+      </div>
+      <div class="jbadges">
+        <span class="jbadge">KOIMA<br>한국수입협회</span>
+        <span class="jx">×</span>
+        <span class="jbadge">EMBASSY<br>OF KAZAKHSTAN</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="list-head" id="directory">
+    <div class="lh-t">
+      <span class="lh-ic">▤</span>
+      <div><h2>카자흐스탄 거래 수입업체 목록</h2>
+        <span class="lh-en">Korean Importer Directory · 검색·필터로 바이어를 찾으세요</span></div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <div class="rescount"><b id="resN">0</b> 개사 · companies</div>
+    <div class="tb-r">
+      <select class="sortsel" id="sortSel">
+        <option value="scale">수입규모 큰 순 / Scale ↓</option>
+        <option value="scale-asc">수입규모 작은 순 / Scale ↑</option>
+        <option value="name">업체명순 / Name A–Z</option>
+        <option value="ctry">거래국 많은 순 / Most markets</option>
+      </select>
+      <button class="btn-csv" id="btnCsv">⤓ CSV</button>
+    </div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+  <div class="pager" id="pager"></div>
+
+  <footer>
+    <div>출처 · Source: <span class="mono">관세청 수입실적 / Korea Customs Service</span>
+      &nbsp;·&nbsp; 데이터 갱신 · Updated <span class="mono" id="ftUpd">—</span></div>
+    <div>KOIMA 바이어 매칭 서비스 · Buyer Matching Service &nbsp;|&nbsp;
+      문의 · Contact: seobh@koima.or.kr</div>
+  </footer>
+</div>
+
+<div class="ov" id="ov"><div class="modal" id="modal"></div></div>
+
+<script>
+const DATA = {"updated":"2026.03.10","total":90,"scale":{"6":["50만불 미만","Under USD 0.5M"],"7":["50만~100만불","USD 0.5–1M"],"8":["100만~300만불","USD 1–3M"],"9":["300만~500만불","USD 3–5M"],"10":["500만~700만불","USD 5–7M"],"11":["700만~1,000만불","USD 7–10M"],"12":["1,000만~3,000만불","USD 10–30M"],"13":["3,000만~5,000만불","USD 30–50M"],"14":["5,000만~1억불","USD 50–100M"],"15":["1억불 초과","Over USD 100M"]},"records":[["1248100998","삼성전자(주)","SAMSUNG ELECTRONICS","","0544795075",15,["중국","베트남","일본","미국","싱가포르","대만","말레이시아","이스라엘","홍콩","독일","태국","필리핀","체코공화국","네덜란드","오스트리아","프랑스","멕시코","인도","인도네시아","영국","캐나다","튀르키예","헝가리","아일랜드","아랍에미리트연합","슬로바키아","호주","남아프리카공화국","폴란드","나이지리아","이탈리아","스위스","코스타리카","브라질","케냐","뉴질랜드","파나마","벨기에","이집트","콜롬비아","사우디아라비아","러시아연방","룩셈부르그","카타르","칠레","덴마크","스웨덴","페루","우크라이나","포루투갈","스페인","요르단","기타국","노르웨이","리투아니아","핀란드","볼리비아","엘살바도르","슬로베니아","그리스","사이프러스","라트비아","과테말라","아르헨티나","리히텐슈타인","이라크","쿠웨이트","루마니아","튀니지","크로아티아","캄보디아","아르메니아","베네주엘라","모리셔스","아이슬란드","우간다","영령캐이맨군도","푸에르토리코","세네갈","세르비아","니카라과","파키스탄","도미니카공화국","리비아","파라과이","방글라데시","조지아","에쿠아도르","모로코","우즈베키스탄","온두라스","브루나이","몽골","불가리아","알제리","탄자니아","우루과이"]],["1078614075","엘지전자(주)","LG Electronics","sh.byun@lge.com","0237773728",15,["중국","대만","베트남","인도네시아","말레이시아","싱가포르","태국","필리핀","일본","멕시코","독일","이탈리아","헝가리","오스트리아","홍콩","미국","인도","프랑스","튀르키예","포루투갈","체코공화국","몰타","스페인","폴란드","네덜란드","영국","브라질","아랍에미리트연합","이스라엘","리투아니아","캐나다","벨기에","카메룬","호주","크리스마스아일랜드","수단","이집트","콜롬비아","세인트헬레나","러시아연방","슬로바키아","루마니아","스위스","노르웨이","모로코","파나마","사우디아라비아","우크라이나","칠레","파푸아뉴기니","남아프리카공화국","알제리","남수단","슬로베니아","방글라데시","페루","아르헨티나","카타르","핀란드","도미니카공화국","바레인","튀니지","엘살바도르","조지아","온두라스","그리스","영령캐이맨군도","덴마크","에쿠아도르","캄보디아","베네주엘라","아일랜드","시리아","마카오","코스타리카","세르비아","나이지리아","스웨덴","뉴질랜드","콩고민주공화국","사이프러스","바베이도스","파키스탄","아프카니스탄"]],["2018153657","(주)신세계인터내셔날","SHINSEGAE INTERNATIONAL INC","thomaskim@sikorea.co.kr","0269791330",15,["이탈리아","베트남","프랑스","중국","미국","방글라데시","인도네시아","일본","인도","루마니아","포루투갈","미얀마","스페인","튀르키예","캄보디아","필리핀","스웨덴","스위스","불가리아","몰도바","튀니지","아르메니아","태국","영국","말레이시아","싱가포르","라오스","모로코","폴란드","이집트","슬로바키아","알바니아","보스니아-헤르체고비나","리투아니아","캐나다","과테말라","헝가리","벨기에","라트비아","온두라스","우크라이나","세르비아","대만","스리랑카","독일","페루","파키스탄","마다카스카르","슬로베니아","네덜란드","아일랜드","엘살바도르","아랍에미리트연합","모리셔스","호주","홍콩","멕시코","오스트리아","체코공화국","우간다","아이티","레바논","에쿠아도르","그리스","덴마크","몽골","크로아티아","이란","케냐","콜롬비아","푸에르토리코","요르단","브라질","네팔","마세도니아","조지아","사우디아라비아","핀란드"]],["1108114794","(주)대한항공","KOREAN AIR LINES CO LTD.","sohyunpark@koreanair.com","0327423650",15,["미국","프랑스","영국","캐나다","중국","일본","독일","멕시코","스웨덴","튀르키예","싱가포르","베트남","말레이시아","폴란드","네덜란드","이탈리아","필리핀","스페인","대만","인도","이스라엘","오스트리아","아랍에미리트연합","아일랜드","러시아연방","벨기에","태국","인도네시아","헝가리","노르웨이","스위스","체코공화국","기타국","루마니아","홍콩","포루투갈","튀니지","남아프리카공화국","몽골","모로코","괌","브라질","덴마크","뉴질랜드","스리랑카","아제르바이잔","스와질랜드","마카오","네팔","미얀마","크로아티아","세르비아","그리스","호주","코스타리카","우즈베키스탄","불가리아","라트비아","도미니카공화국","모나코","파나마","슬로바키아","푸에르토리코","페루","몰타","스발비드군도","파키스탄","아르헨티나"]],["3068130866","(주)케이티앤지","KT&G","kimyh060816@ktng.com","0429395200",15,["브라질","인도","탄자니아","미국","말라위","중국","인도네시아","짐바브웨","필리핀","독일","프랑스","스위스","우간다","불가리아","잠비아","스페인","도미니카공화국","이탈리아","모잠비크","말레이시아","아랍에미리트연합","그리스","체코공화국","파라과이","방글라데시","튀르키예","태국","베트남","네팔","네덜란드","쿠바","아르헨티나","스웨덴","마세도니아","요르단","몰타","러시아연방","폴란드","몽골","영국","아일랜드","세르비아","우즈베키스탄","볼리비아","헝가리","콩고민주공화국","키르기스스탄","캐나다","남아프리카공화국","벨기에","캄보디아","일본","호주","대만","콜롬비아","싱가포르","케냐","알바니아","이스라엘","루마니아","홍콩","슬로바키아","라오스","슬로베니아"]],["1018116406","현대모비스 (주)","HYUNDAI MOBIS","kmira@mobis.com","0220186315",15,["대만","중국","독일","필리핀","말레이시아","태국","일본","홍콩","몰타","헝가리","싱가포르","슬로바키아","미국","체코공화국","오스트리아","이탈리아","프랑스","멕시코","베트남","슬로베니아","포루투갈","영국","폴란드","루마니아","튀르키예","인도","스위스","인도네시아","모로코","스페인","스웨덴","불가리아","브라질","이스라엘","노르웨이","스와질랜드","캐나다","크로아티아","네덜란드","룩셈부르그","세르비아","아랍에미리트연합","남아프리카공화국","카메룬","벨기에","호주","우크라이나","그리스","아일랜드","파키스탄","덴마크","세인트빈센트그레나딘","니카라과","라오스","요르단","페루","이집트","사우디아라비아"]],["2208109507","머크(주)","MERCK KOREA","si.chung@merck.co.kr","0221853915",15,["미국","스위스","독일","프랑스","이탈리아","스웨덴","중국","스페인","네덜란드","아일랜드","영국","일본","오스트리아","인도","덴마크","브라질","대만","핀란드","이스라엘","캐나다","폴란드","마다카스카르","말레이시아","코스타리카","벨기에","태국","체코공화국","포루투갈","헝가리","멕시코","우크라이나","사우디아라비아","마세도니아","안도라","호주","뉴질랜드","에스토니아","라트비아","요르단","싱가포르","러시아연방","리투아니아","아르헨티나","노르웨이","튀르키예","슬로바키아","카타르","필리핀","칠레","스리랑카","남아프리카공화국","홍콩","루마니아","튀니지","모로코"]],["1868100924","롯데웰푸드(주)","LOTTE WELL FOOD","","0226706114",15,["싱가포르","가나","뉴질랜드","네덜란드","말레이시아","미국","중국","독일","에쿠아도르","프랑스","스위스","호주","브라질","에티오피아","콜롬비아","인도네시아","스페인","캐나다","벨기에","아르헨티나","일본","이탈리아","태국","베네주엘라","우크라이나","덴마크","온두라스","튀르키예","인도","체코공화국","리투아니아","베트남","영국","과테말라","필리핀","마다카스카르","핀란드","코스타리카","러시아연방","멕시코","대만","탄자니아","칠레","오스트리아","슬로바키아","파키스탄","미얀마","불령리유니온코모도제도","스웨덴","이스라엘","페루","폴란드","솔로몬군도","에스토니아"]],["1108120980","한국필립모리스(주)","Philip Morris Korea Inc","namhee.kim@pmintl.com","0237070859",15,["필리핀","일본","중국","인도네시아","프랑스","말레이시아","브라질","미국","이탈리아","오스트리아","말라위","체코공화국","태국","아르헨티나","네덜란드","독일","모잠비크","벨기에","그리스","베트남","인도","튀르키예","스페인","스위스","폴란드","파키스탄","영국","리투아니아","핀란드","헝가리","포루투갈","호주","스웨덴","몽골","키르기스스탄","세르비아","캐나다","싱가포르","루마니아","아일랜드","슬로바키아","슬로베니아","불가리아","대만","수리남","룩셈부르그","덴마크","코스타리카","러시아연방","멕시코","스와질랜드","보스니아-헤르체고비나","크로아티아","홍콩"]],["3018702315","주식회사 포스코","POSCO","mongyoo@posco.com","0542201335",15,["호주","캐나다","브라질","인도네시아","남아프리카공화국","중국","말레이시아","일본","인도","모잠비크","미국","태국","칠레","대만","바레인","페루","브루나이","마다카스카르","러시아연방","콜롬비아","이탈리아","독일","오만","싱가포르","스웨덴","베트남","벨리제","가봉","멕시코","아랍에미리트연합","부탄","슬로베니아","프랑스","에스토니아","스페인","오스트리아","헝가리","스위스","영국","노르웨이","체코공화국","네덜란드","벨기에","룩셈부르그","루마니아","잠비아","핀란드","보스니아-헤르체고비나","튀르키예","폴란드","슬로바키아"]],["1188115012","롯데케미칼(주)","LOTTE CHEMICAL","kukchan.sung@lotte.net","028294402",15,["아랍에미리트연합","중국","알제리","일본","대만","카타르","쿠웨이트","미국","바레인","사우디아라비아","오만","인도","몰타","말레이시아","파키스탄","싱가포르","이라크","스페인","인도네시아","독일","프랑스","호주","이탈리아","영국","벨기에","베트남","이스라엘","네덜란드","태국","덴마크","홍콩","헝가리","멕시코","오스트리아","스위스","튀르키예","폴란드","캐나다","슬로바키아","브라질","이집트","러시아연방","칠레","포루투갈","나이지리아","라트비아","아일랜드","체코공화국","루마니아","에스토니아","방글라데시"]],["6108537029","(주)풍산울산사업장","POONGSAN ULSAN SAUP JANG","ksg@poongsan.co.kr","0522319216",15,["칠레","콩고민주공화국","미국","호주","일본","영국","이스라엘","태국","잠비아","사우디아라비아","대만","인도네시아","멕시코","말레이시아","콜롬비아","필리핀","인도","파나마","에쿠아도르","홍콩","싱가포르","캐나다","중국","푸에르토리코","스페인","사이프러스","과테말라","파라과이","남아프리카공화국","그리스","온두라스","방글라데시","독일","니카라과","파키스탄","핀란드","조지아","케냐","코트디봐르","요르단","프랑스","베트남","오스트리아","이탈리아","폴란드","스위스","헝가리"]],["1218110385","현대제철(주)","HYUNDAI STEEL COMPANY","smhj3134@hanmail.net","0234646002",15,["호주","브라질","남아프리카공화국","캐나다","러시아연방","미국","일본","중국","인도네시아","모잠비크","뉴질랜드","우크라이나","페루","콜롬비아","스웨덴","말레이시아","프랑스","독일","인도","베트남","이탈리아","스페인","오스트리아","룩셈부르그","멕시코","벨기에","루마니아","영국","슬로베니아","네덜란드","폴란드","체코공화국","태국","튀르키예","라트비아","아이슬란드","노르웨이"]],["1048158195","주식회사포스코인터내셔널","POSCO INTERNATIONAL","","027592500",15,["중국","일본","미국","칠레","호주","베트남","태국","카타르","파푸아뉴기니","튀르키예","브루나이","스웨덴","우즈베키스탄","말레이시아","마다카스카르","홍콩","독일","인도네시아","인도","프랑스","네덜란드","아르헨티나","스페인","멕시코","싱가포르","체코공화국","캐나다","러시아연방","사우디아라비아","미얀마","방글라데시","코스타리카","콜롬비아","브라질","오만","대만"]],["4178400023","지에스칼텍스(주)여수공장","GS CALTEX CORP","lg4522@gscaltex.co.kr","0616802211",15,["아랍에미리트연합","미국","사우디아라비아","이라크","알제리","쿠웨이트","오만","일본","카타르","중국","노르웨이","인도","인도네시아","대만","싱가포르","말레이시아","마샬군도","그리스","캐나다","이탈리아","리비아","필리핀","태국","독일","파키스탄","베트남","루마니아","영국","이스라엘","체코공화국","벨기에"]],["1018660120","에스케이에너지(주)","SK ENERGY","wisung@sk.com","0221214348",15,["쿠웨이트","이라크","미국","아랍에미리트연합","사우디아라비아","브라질","말레이시아","오만","일본","싱가포르","콩고민주공화국","캐나다","호주","가봉","나이지리아","이탈리아","중국","독일","인도","덴마크","대만","영국","프랑스","멕시코","바레인","태국","인도네시아"]],["1378633904","에스케이인천석유화학(주)","SK INCHEON PETROCHEM CO LTD","","0325705211",15,["미국","아랍에미리트연합","사우디아라비아","호주","브라질","오만","이라크","알제리","중국","말레이시아","뉴질랜드","인도","노르웨이","파푸아뉴기니","카타르","적도기니","나이지리아","이탈리아","인도네시아","그리스","이스라엘","페루","독일","일본","영국","덴마크","싱가포르"]],["1168118686","(주)엘엑스인터내셔널","LX INTERNATIONAL CORP.","yhkimb@lgi.co.kr","0269845164",15,["중국","미국","인도네시아","러시아연방","칠레","트리니다드토바고","사우디아라비아","바레인","오만","호주","뉴질랜드","베트남","카타르","태국","멕시코","대만","인도","말레이시아","라트비아","일본","싱가포르","튀르키예","아랍에미리트연합","스페인"]],["5068101452","(주)포스코퓨처엠","POSCO FUTURE M","","0542900407",15,["중국","일본","독일","벨기에","대만","프랑스","미국","인도네시아","파키스탄","모로코","핀란드","오만","인도","오스트리아","이탈리아","모잠비크","홍콩","말레이시아","호주","아르헨티나","폴란드","네덜란드","영국"]],["7918500194","삼성물산(주)","SAMSUNG C&T CORPORATION","baeksan.jang@samsung.com","0221452089",15,["미국","중국","사우디아라비아","칠레","일본","트리니다드토바고","뉴질랜드","대만","인도네시아","바레인","베트남","말레이시아","태국","카타르","인도","멕시코","폴란드","튀르키예","홍콩","이집트","스웨덴"]],["1378173779","(주)세아엠앤에스","GWNAGYANG ALLOY IRON CO.,LTD.","","0618077114",15,["러시아연방","칠레","호주","멕시코","아랍에미리트연합","페루","캐나다","미국","인도","몽골","핀란드","마다카스카르","뉴질랜드","말리","베트남","인도네시아","네덜란드","아르메니아","중국","벨기에"]],["1378116889","(주)풍전비철","POONG JEON NONFERROUS METAL CO LTD","songegg@hanmail.net","0325619111",15,["러시아연방","인도","호주","중국","인도네시아","말레이시아","멕시코","스페인","캄보디아","필리핀","태국","브라질","대만","베트남","영국","방글라데시","일본","남아프리카공화국","독일"]],["3148100849","한전원자력연료(주)","KEPCO NF","dk0868@hanmail.net","",15,["러시아연방","미국","아랍에미리트연합","프랑스","독일","스웨덴","중국","스위스","체코공화국","캐나다","일본","네덜란드","폴란드","대만","기타국","슬로바키아","불가리아","이탈리아"]],["7948102456","주식회사 세아베스틸","SEAHBESTEEL","salee@esein.co.kr","0269702000",15,["일본","중국","러시아연방","인도","브라질","미국","독일","베트남","캐나다","말레이시아","이탈리아","튀르키예","핀란드","태국","칠레","스웨덴","스페인"]],["5128500043","(주)영풍석포제련소","YOUNG POONG CORPORATION","rora@ypzinc.co.kr","0546797222",15,["멕시코","볼리비아","페루","미국","호주","튀르키예","에리트리아","사우디아라비아","독일","칠레","중국","영국","인도"]],["2238100863","삼성메디슨주식회사","SAMSUNG MEDISON CO.,LTD.","jw.park0123@samsungmedison.com","0221941019",14,["중국","대만","미국","필리핀","말레이시아","일본","네덜란드","싱가포르","태국","이스라엘","프랑스","캐나다","스웨덴","독일","영국","베트남","튀르키예","이탈리아","폴란드","멕시코","인도","핀란드","노르웨이","스페인","인도네시아","체코공화국","남아프리카공화국","오스트리아","벨기에","호주","헝가리","홍콩","칠레","브라질","아랍에미리트연합","코스타리카","과테말라","이집트","덴마크","사우디아라비아","에쿠아도르","루마니아","러시아연방","모로코","룩셈부르그","스위스","파나마","방글라데시","네팔","아르헨티나","콜롬비아","튀니지","우즈베키스탄","사이프러스","세르비아","포루투갈","오만","우루과이","리투아니아","요르단","니카라과","마세도니아","크로아티아","슬로베니아","이라크"]],["2208102784","한국앤컴퍼니(주)","HANKOOK & COMPANY","","03151788047",14,["인도","중국","태국","미국","말레이시아","호주","벨기에","독일","스웨덴","스페인","대만","오스트리아","일본","캐나다","프랑스","인도네시아","몰타","영국","이탈리아","체코공화국","스위스","헝가리"]],["8108800647","주식회사 에코프로머티리얼즈","ECOPROMATERIALS CO LTD","","0547202210",14,["콩고민주공화국","호주","중국","뉴칼레도니아","핀란드","남아프리카공화국","인도","일본","독일","미국","싱가포르"]],["6068118480","(주)태성비철","TAESEONG METAL CO.,LTD.","metaltaesung82@gmail.com","0513150544",14,["호주","핀란드","브라질","중국","인도","노르웨이","러시아연방","남아프리카공화국"]],["4018132460","이스타항공(주)","EASTAR JET","dhtpdksl@eastarjet.com","0236607094",13,["미국","대만","일본","중국","폴란드","태국","프랑스","독일","영국","캐나다","베트남","말레이시아","멕시코","필리핀","헝가리","튀르키예","인도네시아","벨기에","이탈리아","인도","체코공화국","코스타리카","싱가포르"]],["6098129083","(주)세아창원특수강","SEAH CHANGWON INTEGRATED SPECIAL STEEL CORPORATION","","0552696124",13,["일본","중국","콜롬비아","인도네시아","대만","태국","미국","독일","말레이시아","인도","노르웨이","이탈리아","오스트리아","호주","스웨덴","프랑스","스위스","영국","체코공화국","벨기에"]],["3388802099","고려용접봉 주식회사","KISWEL LTD","","0552697212",13,["중국","일본","프랑스","호주","시에라리온","스웨덴","네덜란드","남아프리카공화국","대만","미국","이탈리아","말레이시아","독일","싱가포르","베트남","오만","러시아연방"]],["1048137870","제이티인터내셔널코리아(주)","JT INTERNATIONAL KOREA INC","","0221705648",13,["필리핀","중국","폴란드","인도네시아","독일","일본","대만"]],["3148201980","한국과학기술원","KAIST","rjs9637@kaist.ac.kr","0423502335",12,["독일","미국","영국","스페인","체코공화국","네덜란드","프랑스","중국","캐나다","대만","일본","덴마크","벨기에","홍콩","스위스","불가리아","싱가포르","오스트리아","포루투갈","호주","스웨덴","이스라엘","아일랜드","말레이시아","슬로베니아","태국","인도네시아","리투아니아","필리핀","멕시코","인도","스리랑카","핀란드","베트남","이탈리아","뉴질랜드","폴란드","헝가리","그리스","코스타리카","도미니카공화국","아랍에미리트연합","튀르키예","몰타","마세도니아","미령버진군도","캄보디아","모로코","노르웨이"]],["2098203522","한국과학기술연구원","KIST KOREA INSTITUTE OF SCIENCE AND TECHNOLOGY","kachoi@kist.re.kr","029586083",12,["일본","독일","네덜란드","체코공화국","미국","중국","영국","스위스","호주","인도네시아","캐나다","대만","벨기에","홍콩","이탈리아","프랑스","포루투갈","헝가리","스웨덴","핀란드","몰타","필리핀","덴마크","말레이시아","튀르키예","라트비아","멕시코","코스타리카","슬로바키아","세르비아","폴란드","베트남","이스라엘","인도","태국","스페인","슬로베니아","모로코","방글라데시","우크라이나","그리스","카메룬","탄자니아","엘살바도르","불가리아"]],["1198638589","주식회사 아이아이컴바인드","IICONBANED CO LTD","","0261117384",12,["중국","네덜란드","싱가포르","이탈리아","독일","스페인","홍콩","일본","프랑스","영국","미국","필리핀","베트남","노르웨이","대만","헝가리","카메룬","멕시코","호주","스위스","아랍에미리트연합","말레이시아","오만","오스트리아","태국","사우디아라비아","포루투갈","캐나다","루마니아","벨기에"]],["1208168832","(주)블루버드","BLUEBIRD INC.","","07077308000",12,["중국","베트남","대만","홍콩","말레이시아","필리핀","브라질","미국","독일","싱가포르","스웨덴","멕시코","일본","캐나다","태국","이탈리아","스페인","영국","튀르키예","인도","폴란드","프랑스","바레인","리투아니아","페루","슬로바키아","아랍에미리트연합","네덜란드","덴마크","그리스"]],["2148108556","한국야금(주)","KORLOY INC.","sdk8585@hanmail.net","025223181",12,["중국","일본","오스트리아","캐나다","이스라엘","독일","대만","인도","스위스","이탈리아","체코공화국","싱가포르","네덜란드","영국","카타르","남아프리카공화국","베트남","헝가리","폴란드","브라질","덴마크","프랑스","튀르키예","미국"]],["1138108888","광동제약 (주)","KWANGDONG PHARMACEUTICAL CO.,LTD.","malicious1@naver.com","0260067145",12,["중국","프랑스","그리스","스페인","미국","독일","뉴질랜드","캐나다","이탈리아","덴마크","인도네시아","일본","체코공화국","칠레","스위스","영국","인도","네덜란드","이스라엘","아랍에미리트연합","튀르키예"]],["6198102801","두원중공업(주)","DOOWONHEAVYINDUSTRIALCOLTD","jamesroh21@doowonhi.com","0558512123",12,["미국","중국","독일","인도","일본","프랑스","오스트리아","영국","폴란드","이탈리아","브라질","대만","필리핀"]],["1098304403","산림항공본부","Forest Aviation Headquarters","","0337696010",12,["미국","러시아연방","우크라이나","프랑스","캐나다","스페인","스웨덴","스위스","중국","독일","벨기에","멕시코"]],["5138192437","주식회사 더스페셜메탈스","TSS Metal co","","0216612858",12,["노르웨이","중국","영국","일본","미국","튀르키예","인도네시아"]],["1368106923","케이비아이알로이 주식회사","KBI ALLOY CO LTD","","0415429711",12,["중국","일본","벨기에","캐나다","멕시코"]],["1148197458","(주)메디트","MEDIT CORP.","","0221425715",11,["미국","프랑스","중국","일본","독일","스위스","이탈리아","대만","스페인","영국","브라질","호주","베트남","폴란드","아랍에미리트연합","이라크","네덜란드","루마니아","인도","멕시코","필리핀","말레이시아","튀르키예","인도네시아","태국","알제리","체코공화국","뉴질랜드","그리스","알바니아","우크라이나","코스타리카","튀니지","포루투갈","뉴칼레도니아","슬로베니아","사우디아라비아","오스트리아","아일랜드","리비아","노르웨이","룩셈부르그","모로코","마세도니아","칠레","덴마크","에스토니아","스웨덴","벨기에","핀란드","마티니크","이집트","홍콩","리투아니아","세르비아","파나마","캄보디아","조지아","아제르바이잔","크로아티아","시리아","슬로바키아","이스라엘","케냐","과테말라","도미니카공화국","파키스탄","불가리아","사이프러스"]],["5298502511","(주)디알젬(김천공장지점)","DRGEM Corporation (Gimcheon Factory)","","07088944175",11,["중국","일본","독일","미국","이탈리아","대만","베트남","필리핀","스위스","튀르키예","멕시코","홍콩","아랍에미리트연합","레바논","태국","챠드","인도네시아","네덜란드","말레이시아","인도","핀란드","슬로바키아","오스트리아","세르비아","프랑스","콜롬비아","에티오피아","싱가포르","스페인","호주","이라크","도미니카공화국","사우디아라비아","리투아니아","카메룬","부르키나파소","포루투갈","보츠와나","크로아티아","예맨","미얀마","영국","몰도바"]],["1088150292","모트렉스(주)","MOTORLAX LTD","linjichoi@moterx.co.kr","07048926086",11,["중국","말레이시아","아르헨티나","대만","슬로바키아","필리핀","독일","인도","브라질","미국","싱가포르","칠레","우즈베키스탄","베트남","브루나이","멕시코","프랑스","호주","라오스","아랍에미리트연합","콜롬비아","이스라엘","이집트"]],["4288700999","(주)제이쿱글로벌","JCOOP GLOBAL INC","","0316133510",11,["폴란드","튀르키예","베트남","이탈리아","중국","스페인","태국","우즈베키스탄","프랑스"]],["1178151806","(주)에코앤드림","ECO&DREAM CO LTD","bhcho@endss.com","0220297031",11,["대만","폴란드","미국","중국","독일","인도네시아","핀란드","남아프리카공화국"]],["1338126110","한일화학공업(주)","HANIL CHEMICAL IND. CO.,LTD.","","0318032884",11,["대만","인도네시아","일본","중국","핀란드","케냐"]],["1238148801","(주)휴비츠","HUVITZ CO.,LTD.","ossong@huvitz.com","0314283582",10,["중국","미국","일본","프랑스","홍콩","대만","이탈리아","튀르키예","독일","스페인","싱가포르","네덜란드","필리핀","카타르","아랍에미리트연합","스위스","영국","말레이시아"]],["1248602593","(주)빅솔론","BIXOLON CO LTD","looha@bixolon.com","0312185500",10,["중국","일본","미국","베트남","독일","네덜란드","대만","싱가포르","이탈리아","영국","핀란드","말레이시아","그리스","스페인","이스라엘"]],["2148633195","비에스메탈(주)","BS METAL CO.,LTD.","","0234771390",10,["인도","남아프리카공화국","중국","러시아연방","호주"]],["2478501060","에스엘(주)안산공장","SL CORPORATION","","0314898511",9,["말레이시아","일본","중국","싱가포르","루마니아","미국","캐나다","독일","홍콩","멕시코","폴란드","베트남","인도","스웨덴","이스라엘","파키스탄"]],["1148199719","(주)엠쓰리모바일","M3 MOBILE CO LTD","hychoi@m3mobile.co.kr","07048914614",9,["중국","베트남","대만","독일","튀르키예","홍콩","프랑스"]],["1228125090","(주)바낙스","BANAX CO., LTD","eee813@banax.co.kr","0325502083",9,["중국","베트남","일본","미국","캐나다","대만","튀르키예"]],["1138684386","(주)스텍","STEK CO LTD","","0262357835",9,["중국","미국","독일","튀르키예","폴란드","몽골","일본"]],["2088124115","(주)마크로젠","Macrogen, Inc.","tax@macrogen.com","0221807000",8,["미국","리투아니아","중국","일본","영국","스페인","태국","호주","멕시코","아르헨티나","이라크","브라질","필리핀","말레이시아","콜롬비아","이탈리아","우루과이","이란","뉴질랜드","파키스탄","인도","칠레","사우디아라비아","오스트리아","네덜란드","에쿠아도르","이집트","베트남","포루투갈","아랍에미리트연합","스리랑카","싱가포르","코스타리카","홍콩","페루","파나마","네팔","요르단","레바논","오만","마카오","남아프리카공화국","인도네시아","방글라데시","파라과이","튀니지","폴란드","프랑스","튀르키예","과테말라","이스라엘","캄보디아","대만","베네주엘라","세인트키츠네비스","아르메니아","카타르","트리니다드토바고","캐나다","케냐","쿠웨이트","라오스","피지","시리아","불가리아","파푸아뉴기니","덴마크","크로아티아","모로코","독일","아일랜드","노르웨이","스위스","핀란드","루마니아","세르비아","감비아","나이지리아","탄자니아","우크라이나","괌","체코공화국","슬로베니아","스웨덴","온두라스","키르기스스탄","아제르바이잔"]],["2148616745","아우모비오코리아 주식회사","AUMOVIO KOREA LTD","yejin.shin@aumovio.com","0316454649",8,["프랑스","독일","중국","헝가리","일본","인도","대만","멕시코","스위스","체코공화국","슬로바키아","루마니아","필리핀","이탈리아","싱가포르","미국","튀르키예","베트남","태국","말레이시아","홍콩","브라질","불가리아","스페인","폴란드","리투아니아","오스트리아","호주","덴마크","포루투갈","영국","인도네시아"]],["2298137000","예스이십사 주식회사","YES 24COM","kara1019@yes24.com","0232159115",8,["일본","미국","영국","중국","프랑스","싱가포르","네덜란드","독일","아랍에미리트연합","캐나다","인도","오스트리아","대만","말레이시아","호주","보스니아-헤르체고비나","멕시코","스페인","이탈리아","핀란드","슬로베니아","홍콩","슬로바키아"]],["1428157034","(주)이지켐텍","EZCHEMTECH Inc","","0312651112",8,["중국","미국","우크라이나","인도","영국","홍콩","러시아연방","캐나다","일본","스위스","독일","네덜란드","프랑스","포루투갈","스페인","오스트리아","이탈리아"]],["5088602879","주식회사 켐원","ChemOne Inc.","","0314980814",8,["중국","라트비아","미국","우크라이나","홍콩","프랑스","인도","캐나다","헝가리","독일","네덜란드","일본","러시아연방","대만","불가리아","영국","레소토"]],["3142276487","애플사이언스","APPLE SCIENCE","sales@appchem.kr","0428263267",8,["중국","우크라이나","라트비아","홍콩","미국","프랑스","네덜란드","헝가리","러시아연방","독일","인도"]],["1258522047","(주)케이디파인켐 평택지점","KD FINECHEM PYEONGTAEK BRANCH","heehoon@kdfinechem.com","0316838429",8,["중국","일본","미국","슬로바키아","인도","튀르키예","멕시코","벨기에","브라질","인도네시아"]],["1208187125","애드윈코리아(주)","ADWIN KOREA CORPORATION","koo@adwin.co.kr","025666173",8,["중국","대만","미국","영국","프랑스","이탈리아","스페인","네덜란드","호주"]],["3018614677","(주)네이처텍","NATURETECH CO LTD","","0435307927",8,["멕시코","중국","캐나다","인도","영국","미국","일본","베트남","대만"]],["1288137008","(주)메가메디칼","MEGA MEDICAL CO LTD","yjkim@hsgls.co.kr","0236624493",8,["중국","일본","대만","독일","멕시코","캐나다","이스라엘","인도"]],["2338107882","(주)바른한방제약","BAREUN ORIENTAL MEDICINE PHARMACEUTICAL CO LTD","","029621669",8,["중국","파키스탄","아제르바이잔","베트남","인도네시아","태국","이집트"]],["2718102759","(주)코레타","KORETA CO LTD","","",8,["러시아연방","독일","폴란드","아랍에미리트연합","조지아","우즈베키스탄","튀르키예"]],["1028134616","한국스미토모상사(주)","SUMITOMO CORPORATION KOREA LTD","jung-hyun.lee@sumitomocorp.com","027211208",8,["튀르키예","일본","미국","중국","베트남","인도네시아"]],["2348600247","(주)버트","VERT","","",8,["중국","대만","베트남","캐나다","포루투갈","미국"]],["1428172433","(주)서울정광","","","0313396092",8,["중국","독일","대만","스위스","홍콩","미국"]],["1328613091","유라시아메탈(주)","eurasiametal co ltd","","0221577476",8,["독일","일본","남아프리카공화국","중국","미국"]],["1348103099","(주)대호산업","","daeholtd@nuri.net","0314918851",8,["중국","독일","영국","인도"]],["1208608810","(주)와이어트","WYATT CO LTD","","0317308906",8,["말레이시아","중국","대만"]],["7168701158","주식회사 위버스컴퍼니","WEVERSE COMPANY INC.","","15440790",7,["일본","중국","미국","온두라스","멕시코","홍콩","대만","브라질","베트남","프랑스","그리스","영국","캐나다","스페인","이탈리아","루마니아","독일","덴마크","태국","핀란드","오스트리아","필리핀","노르웨이","마카오","싱가포르","파나마","라트비아","에쿠아도르","남아프리카공화국"]],["2068207591","세종대학교산학협력단","SejongUniversity IndustryAcademy Cooperation Foundation","byj@sejong.ac.kr","0234083032",7,["핀란드","미국","덴마크","프랑스","일본","스위스","중국","네덜란드","대만","오스트리아","멕시코","인도","캐나다","스페인","베트남","홍콩","폴란드","필리핀","독일","싱가포르","태국","엘살바도르","이스라엘"]],["1348738310","(주)덴티스","DENTIS CO LTD","","0535832804",7,["중국","튀르키예","일본","이탈리아","대만","독일","호주","미국","베트남","폴란드","홍콩","콜롬비아","포루투갈"]],["7628700773","(주)노바인스트루먼트","nobine","","03180289936",7,["프랑스","미국","독일","포루투갈","슬로바키아","러시아연방","영국","중국","일본","홍콩"]],["1428801617","(주)자은생약","JAEUN HERB MEDICINE CO LTD","","029592117",7,["중국","우즈베키스탄","인도","콜롬비아","베트남"]],["1198632983","에이티이(주)","ATE Corporation","","028554070",7,["독일","오스트리아","중국","이탈리아"]],["6088107131","주식회사무학","MUHAK CO LTD","","0552933161",7,["이탈리아","중국"]],["2698101494","(주)부오노","buono","khwlion@naver.com","",6,["이탈리아","일본","튀니지","루마니아","중국","포루투갈","프랑스","튀르키예","인도네시아","베트남","스페인","영국","크로아티아","불가리아","알바니아","몰도바"]],["3148118655","아스텔(주)","ASTEL INC.","astel@astel.co.kr","0428632166",6,["대만","미국","튀르키예","중국","이집트","이라크","말레이시아","아랍에미리트연합","인도네시아"]],["1138683295","(주)인디라테크놀로지스","INDIRA TECHNOLOGIES CO LTD","","0226160468",6,["러시아연방","중국","홍콩","아랍에미리트연합","멕시코","캐나다"]],["7708702321","(주)메가푸드","MEGA FOOD","","",6,["우즈베키스탄","러시아연방","벨라루스","체코공화국","리투아니아"]],["8698800504","주식회사 아름다운","AREUMDAUN CO,.LTD","","0325452305",6,["중국","일본","몽골","말레이시아"]],["4738803033","(주)마스터스","MASTERS","","",6,["조지아","러시아연방"]],["3808600628","주식회사 천수식품","CHEON SU","","07070930400",6,["중국"]],["1258800419","주식회사 에이제이티글로벌","AJT GLOBAL","","",6,["러시아연방"]],["4848801898","주식회사 원메탈","ONE METAL CO LTD","","",6,["중국"]]]};
+const SCALE = DATA.scale;
+const RECS = DATA.records; // [biz,nameKr,nameEn,email,phone,scaleCode,[otherCountries]]
+const SCOLOR = {
+  6:['#6D6E70','#ececec'],7:['#5a6a3a','#eef0e4'],8:['#4a6a4a','#e6f0e8'],
+  9:['#3a6a6a','#e2f0f0'],10:['#3a5a8a','#e4eaf4'],11:['#1A2B5E','#e6e9f2'],
+  12:['#5a3a8a','#ebe4f2'],13:['#8a3a6a','#f2e4ec'],14:['#a83a3a','#f4e4e4'],
+  15:['#D0001B','#fae2e4']
+};
+
+const state={q:'',scales:new Set(),mailOnly:false,sort:'scale',page:1,pageSize:40,results:[]};
+
+/* KPI */
+document.getElementById('k1').innerHTML='<b>'+RECS.length.toLocaleString()+'</b>';
+document.getElementById('k2').innerHTML='<b>'+RECS.filter(r=>r[5]>=12).length.toLocaleString()+'</b>';
+document.getElementById('k3').innerHTML='<b>'+RECS.filter(r=>r[3]).length.toLocaleString()+'</b>';
+document.getElementById('ftUpd').textContent=DATA.updated;
+
+/* scale chips */
+const scaleRow=document.getElementById('scaleRow');
+[15,14,13,12,11,10,9,8,7,6].forEach(code=>{
+  const el=document.createElement('div');
+  el.className='schip';el.textContent=SCALE[code][0];
+  el.onclick=()=>{
+    state.scales.has(code)?(state.scales.delete(code),el.classList.remove('on'))
+      :(state.scales.add(code),el.classList.add('on'));
+    state.page=1;run();
+  };
+  scaleRow.appendChild(el);
+});
+
+/* inputs */
+let qT;
+document.getElementById('q').oninput=e=>{clearTimeout(qT);
+  qT=setTimeout(()=>{state.q=e.target.value.trim().toLowerCase();state.page=1;run();},170);};
+const mailTg=document.getElementById('mailTg');
+mailTg.onclick=()=>{state.mailOnly=!state.mailOnly;
+  mailTg.classList.toggle('on',state.mailOnly);state.page=1;run();};
+document.getElementById('sortSel').onchange=e=>{state.sort=e.target.value;state.page=1;run();};
+document.getElementById('btnReset').onclick=()=>{
+  state.q='';state.scales.clear();state.mailOnly=false;state.sort='scale';state.page=1;
+  document.getElementById('q').value='';
+  document.getElementById('sortSel').value='scale';
+  mailTg.classList.remove('on');
+  document.querySelectorAll('.schip').forEach(e=>e.classList.remove('on'));
+  run();
+};
+
+/* filter */
+function filter(){
+  const q=state.q,sc=state.scales,mail=state.mailOnly,out=[];
+  for(let k=0;k<RECS.length;k++){
+    const r=RECS[k];
+    if(q&&!((r[1]&&r[1].toLowerCase().includes(q))||
+            (r[2]&&r[2].toLowerCase().includes(q))||
+            (r[0]&&r[0].includes(q))))continue;
+    if(sc.size&&!sc.has(r[5]))continue;
+    if(mail&&!r[3])continue;
+    out.push(k);
+  }
+  const s=state.sort;
+  if(s==='scale')out.sort((a,b)=>RECS[b][5]-RECS[a][5]||RECS[b][6].length-RECS[a][6].length);
+  else if(s==='scale-asc')out.sort((a,b)=>RECS[a][5]-RECS[b][5]);
+  else if(s==='name')out.sort((a,b)=>(RECS[a][1]||'').localeCompare(RECS[b][1]||'','ko'));
+  else if(s==='ctry')out.sort((a,b)=>RECS[b][6].length-RECS[a][6].length);
+  return out;
+}
+
+const grid=document.getElementById('grid'),pager=document.getElementById('pager'),
+      resN=document.getElementById('resN');
+function run(){
+  state.results=filter();
+  resN.textContent=state.results.length.toLocaleString();
+  document.getElementById('btnCsv').disabled=state.results.length===0;
+  renderGrid();renderPager();
+}
+function renderGrid(){
+  const total=state.results.length;
+  if(!total){grid.innerHTML='<div class="nodata"><div class="big">검색 결과가 없습니다 · No results</div>'+
+    '<div>조건을 변경하거나 초기화하세요 · Adjust or reset filters.</div></div>';return;}
+  const start=(state.page-1)*state.pageSize;
+  grid.innerHTML=state.results.slice(start,start+state.pageSize).map(k=>{
+    const r=RECS[k],sc=SCALE[r[5]]||SCALE[6],col=SCOLOR[r[5]]||SCOLOR[6];
+    const cts=r[6].slice(0,4).map(c=>`<span class="ct-tag">${c}</span>`).join('');
+    const more=r[6].length>4?`<span class="ct-more">+${r[6].length-4}</span>`:'';
+    const em=r[3]?`<span class="cc-pill em">✉ ${r[3]}</span>`
+      :`<span class="cc-pill no">✉ 이메일 미등록</span>`;
+    const ph=r[4]?`<span class="cc-pill">✆ ${r[4]}</span>`:'';
+    return `<div class="card" data-k="${k}">
+      <div class="card-top">
+        <div><div class="card-nm">${r[1]||'(상호 미상)'}</div>
+          ${r[2]?`<div class="card-en">${r[2]}</div>`:''}</div>
+        <span class="scale-badge" style="color:${col[0]};background:${col[1]}">${sc[1]}</span>
+      </div>
+      <div class="card-ctry">${cts}${more||(cts?'':'—')}</div>
+      <div class="card-contact">${em}${ph}</div>
+      <div class="card-meta">
+        <span class="mi">사업자 · Biz <b>${r[0]||'—'}</b></span>
+        <span class="mi">거래국 · Markets <b>${r[6].length+1}</b></span>
+      </div>
+    </div>`;
+  }).join('');
+  grid.querySelectorAll('.card').forEach(c=>c.onclick=()=>openDetail(+c.dataset.k));
+}
+function renderPager(){
+  const total=state.results.length,pages=Math.ceil(total/state.pageSize);
+  if(pages<=1){pager.innerHTML='';return;}
+  const p=state.page;let html=`<button ${p===1?'disabled':''} data-p="${p-1}">‹</button>`,nums=[];
+  for(let i=1;i<=pages;i++){
+    if(i===1||i===pages||(i>=p-2&&i<=p+2))nums.push(i);
+    else if(nums[nums.length-1]!=='…')nums.push('…');
+  }
+  nums.forEach(n=>html+=n==='…'?'<span class="pinfo">…</span>'
+    :`<button class="${n===p?'on':''}" data-p="${n}">${n}</button>`);
+  html+=`<button ${p===pages?'disabled':''} data-p="${p+1}">›</button>`;
+  html+=`<span class="pinfo">${total.toLocaleString()}개사 중 ${((p-1)*state.pageSize+1).toLocaleString()}–${Math.min(p*state.pageSize,total).toLocaleString()}</span>`;
+  pager.innerHTML=html;
+  pager.querySelectorAll('button[data-p]').forEach(b=>b.onclick=()=>{
+    state.page=+b.dataset.p;renderGrid();renderPager();
+    window.scrollTo({top:document.querySelector('.toolbar').offsetTop-16,behavior:'smooth'});});
+}
+
+/* modal */
+const ov=document.getElementById('ov'),modal=document.getElementById('modal');
+function openDetail(k){
+  const r=RECS[k],sc=SCALE[r[5]]||SCALE[6],col=SCOLOR[r[5]]||SCOLOR[6];
+  const allc=['카자흐스탄',...r[6]];
+  const chips=allc.map((c,i)=>`<span class="ct-chip ${i===0?'vn':''}">${c}</span>`).join('');
+  modal.innerHTML=`
+    <div class="modal-h">
+      <div><h3>${r[1]||'(상호 미상)'}</h3>
+        ${r[2]?`<div class="en">${r[2]}</div>`:''}</div>
+      <button class="x-btn" id="xBtn">×</button>
+    </div>
+    <div class="modal-b">
+      <div class="dgrid">
+        <div class="dfield"><div class="dl">사업자번호 · Business No.</div>
+          <div class="dv">${r[0]||'—'}</div></div>
+        <div class="dfield"><div class="dl">수입 규모 · Import Scale</div>
+          <div class="dv"><span class="scale-badge" style="color:${col[0]};background:${col[1]}">${sc[0]}</span></div></div>
+        <div class="dfield"><div class="dl">이메일 · Email</div>
+          <div class="dv">${r[3]?`<a href="mailto:${r[3]}">${r[3]}</a>`:'<span style="color:#bbb">미등록 N/A</span>'}</div></div>
+        <div class="dfield"><div class="dl">전화 · Phone</div>
+          <div class="dv">${r[4]?`<a href="tel:${r[4]}">${r[4]}</a>`:'<span style="color:#bbb">미등록 N/A</span>'}</div></div>
+      </div>
+      <div class="dsec-t">수입 거래국 · Sourcing Markets (${allc.length})</div>
+      <div class="ct-chips">${chips}</div>
+      <div class="modal-cta">
+        이 업체와의 매칭·소개를 원하시면 KOIMA로 문의하세요. &nbsp;<b>seobh@koima.or.kr</b><br>
+        <span style="color:#999">For an introduction to this buyer, contact KOIMA Buyer Matching Service.</span>
+      </div>
+    </div>`;
+  ov.classList.add('open');
+  document.getElementById('xBtn').onclick=()=>ov.classList.remove('open');
+}
+ov.onclick=e=>{if(e.target===ov)ov.classList.remove('open');};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')ov.classList.remove('open');});
+
+/* CSV */
+document.getElementById('btnCsv').onclick=()=>{
+  if(!state.results.length)return;
+  const head=['업체명(한글)','업체명(영문)','사업자번호','수입규모','이메일','전화번호','수입거래국'];
+  const rows=state.results.map(k=>{
+    const r=RECS[k];
+    return [r[1],r[2],r[0],(SCALE[r[5]]||['',''])[0],r[3],r[4],['카자흐스탄',...r[6]].join(' / ')];
+  });
+  const esc=v=>{v=(v==null?'':String(v));return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;};
+  const csv='\uFEFF'+[head,...rows].map(r=>r.map(esc).join(',')).join('\r\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='KOIMA_카자흐스탄_수입업체_'+new Date().toISOString().slice(0,10).replace(/-/g,'')+'.csv';
+  a.click();URL.revokeObjectURL(a.href);
+};
+
+run();
+</script>
+</body>
+</html>
